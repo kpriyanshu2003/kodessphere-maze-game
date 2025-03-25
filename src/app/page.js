@@ -1,103 +1,111 @@
-import Image from "next/image";
+'use client';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [leaderboard, setLeaderboard] = useState([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      const data = [
+        { userid: 'U101', name: 'Askshat_Singh', level: 'Expert', moves: 36, time: 126, points: 4 },
+        { userid: 'U102', name: 'Saumya_Sharma', level: 'Advanced', moves: 42, time: 156, points: 4 },
+        { userid: 'U103', name: 'Khushi Pandey', level: 'Intermediate', moves: 28, time: 110, points: 3 },
+        { userid: 'U104', name: 'Saket_Sarkaar', level: 'Advanced', moves: 33, time: 124, points: 3 },
+        { userid: 'U105', name: 'Thala_fra_Reason', level: 'Intermediate', moves: 38, time: 135, points: 3 },
+        { userid: 'U106', name: 'Virat_Kohli', level: 'Beginner', moves: 46, time: 176, points: 3 },
+        { userid: 'U106', name: 'Virat_Kohli', level: 'Beginner', moves: 46, time: 176, points: 3 },
+        { userid: 'U106', name: 'Virat_Kohli', level: 'Beginner', moves: 46, time: 176, points: 3 },
+        { userid: 'U106', name: 'Virat_Kohli', level: 'Beginner', moves: 46, time: 176, points: 3 },
+        { userid: 'U106', name: 'Virat_Kohli', level: 'Beginner', moves: 46, time: 176, points: 3 }
+      ];
+      setLeaderboard(data);
+    };
+    fetchLeaderboard();
+    const interval = setInterval(fetchLeaderboard, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div
+      className="min-h-screen bg-cover bg-center bg-fixed flex flex-col items-center p-6 relative"
+      style={{
+        backgroundImage: "url('/background_image.jpg')",
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundBlendMode: 'darken'
+      }}
+    >
+      {/* Top Right Logo with Lighter Background */}
+      <div className="absolute top-4 right-4 p-2 bg-white/40 rounded-lg">
+        <img
+          src="/konnexions.png"
+          alt="Konnexions Logo"
+          className="h-16 w-auto"
+        />
+      </div>
+
+      {/* Title */}
+      <h1 className="text-white text-5xl font-bold mt-10 text-center tracking-wide">
+        🏆 Kodesphere v_2.0 🏅
+      </h1>
+
+
+      {/* Medal Display */}
+      <div className="flex items-center justify-center mt-6 gap-6">
+        <div className="flex flex-col items-center">
+          <img src="/second.png" alt="Second Place" className="h-24 md:h-28 lg:h-32 w-auto" />
+          <p className="text-yellow-400 text-xl font-bold">#2 <span className="text-white text-lg">{leaderboard[1]?.name}</span></p>
+          <p className="text-gray-300 text-sm">UserId: {leaderboard[1]?.userid}</p>
+          <p className="text-white text-sm">Level: {leaderboard[1]?.level}</p>
+          <p className="text-white text-sm">Moves: {leaderboard[1]?.moves}</p>
+          <p className="text-white text-sm">Time: {leaderboard[1]?.time}</p>
+          <p className="text-white text-sm">Points scored: {leaderboard[1]?.points}</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        <div className="flex flex-col items-center">
+          <img src="/first.png" alt="First Place" className="h-28 md:h-36 lg:h-44 w-auto" />
+          <p className="text-yellow-400 text-xl font-bold">#1 <span className="text-white text-lg">{leaderboard[0]?.name}</span></p>
+          <p className="text-gray-300 text-sm">UserId: {leaderboard[0]?.userid}</p>
+          <p className="text-white text-sm">Level: {leaderboard[0]?.level}</p>
+          <p className="text-white text-sm">Moves: {leaderboard[0]?.moves}</p>
+          <p className="text-white text-sm">Time: {leaderboard[0]?.time}</p>
+          <p className="text-white text-sm">Points scored: {leaderboard[0]?.points}</p>
+        </div>
+        <div className="flex flex-col items-center">
+          <img src="/third.png" alt="Third Place" className="h-24 md:h-28 lg:h-32 w-auto" />
+          <p className="text-yellow-400 text-xl font-bold">#3 <span className="text-white text-lg">{leaderboard[2]?.name}</span></p>
+          <p className="text-gray-300 text-sm">UserId: {leaderboard[2]?.userid}</p>
+          <p className="text-white text-sm">Level: {leaderboard[2]?.level}</p>
+          <p className="text-white text-sm">Moves: {leaderboard[2]?.moves}</p>
+          <p className="text-white text-sm">Time: {leaderboard[2]?.time}</p>
+          <p className="text-white text-sm">Points scored: {leaderboard[2]?.points}</p>
+        </div>
+      </div>
+      
+      {/* Column Headers */}
+      <div className="w-full max-w-5xl bg-black/35 backdrop-blur-md p-4 rounded-lg shadow-lg flex justify-between text-gray-200 font-semibold text-lg mt-10">
+        <div className="w-1/12 text-center">Rank</div>
+        <div className="w-1/6 text-center">UserId</div>
+        <div className="w-1/6 text-center">Name</div>
+        <div className="w-1/6 text-center">Level</div>
+        <div className="w-1/6 text-center">Moves</div>
+        <div className="w-1/6 text-center">Time_Taken</div>
+        <div className="w-1/6 text-center">Points_Scored</div>
+      </div>
+
+      {/* Player Cards */}
+      {leaderboard.slice(3).map((player, index) => (
+        <div
+          key={index}
+          className="w-full max-w-5xl bg-black/30 backdrop-blur-lg p-4 rounded-lg shadow-lg flex justify-between text-gray-300 mt-4 transform hover:scale-105 transition-transform"
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <div className="w-1/12 text-center font-bold text-yellow-400">#{index + 4}</div>
+          <div className="w-1/6 text-center text-gray-300">{player.userid}</div>
+          <div className="w-1/6 text-center">{player.name}</div>
+          <div className="w-1/6 text-center">{player.level}</div>
+          <div className="w-1/6 text-center">{player.moves}</div>
+          <div className="w-1/6 text-center">{player.time}</div>
+          <div className="w-1/6 text-center">{player.points}</div>
+        </div>
+      ))}
     </div>
   );
 }
