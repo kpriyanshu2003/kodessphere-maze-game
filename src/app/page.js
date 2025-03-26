@@ -1,103 +1,127 @@
-import Image from "next/image";
+'use client';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [leaderboard, setLeaderboard] = useState([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      const data = [
+        { userid: 'U101', name: 'Askshat_Singh', level: 'Expert', moves: 36, time: 126, points: 4 },
+        { userid: 'U102', name: 'Saumya_Sharma', level: 'Advanced', moves: 42, time: 156, points: 4 },
+        { userid: 'U103', name: 'Khushi Pandey', level: 'Intermediate', moves: 28, time: 110, points: 3 },
+        { userid: 'U104', name: 'Saket_Sarkaar', level: 'Advanced', moves: 33, time: 124, points: 3 },
+        { userid: 'U105', name: 'Thala_fra_Reason', level: 'Expert', moves: 38, time: 135, points: 3 },
+        { userid: 'U106', name: 'Virat_Kohli', level: 'Expert', moves: 46, time: 176, points: 3 },
+        { userid: 'U107', name: 'Rohit_Sharma', level: 'Intermediate', moves: 46, time: 176, points: 3 },
+        { userid: 'U108', name: 'Yuvraj_Singh', level: 'Advanced', moves: 46, time: 176, points: 3 },
+        { userid: 'U109', name: 'Bumrah', level: 'Beginner', moves: 46, time: 176, points: 3 },
+        { userid: 'U110', name: 'Chahal', level: 'Beginner', moves: 46, time: 176, points: 3 }
+      ];
+      setLeaderboard(data);
+    };
+    fetchLeaderboard();
+    const interval = setInterval(fetchLeaderboard, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div
+      className="min-h-screen bg-cover bg-center bg-fixed flex flex-col items-center p-4 sm:p-6 relative"
+      style={{
+        backgroundImage: "url('/background_image.jpg')",
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundBlendMode: 'darken'
+      }}
+    >
+      {/* Top Right Logo */}
+      <div className="absolute top-4 right-4 p-2 bg-white/40 rounded-lg">
+        <img src="/konnexions.png" alt="Konnexions Logo" className="h-12 sm:h-16 w-auto" />
+      </div>
+
+      {/* Title */}
+      <h1 className="text-white text-3xl sm:text-5xl font-bold mt-6 sm:mt-10 text-center tracking-wide">
+        🏆 Kodesphere v_2.0 🏅
+      </h1>
+
+      {/* Medal Display */}
+      <div className="flex flex-wrap items-center justify-center mt-6 gap-4 sm:gap-6">
+        <div className="flex flex-col items-center">
+          <img src="/second.webp" alt="Second Place" className="h-20 sm:h-28 w-auto" />
+          <p className="text-lg sm:text-xl font-bold">
+            <span className="text-yellow-400">#2</span>{' '}
+            <span className="text-white">{leaderboard[1]?.name}</span>
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="flex flex-col items-center">
+          <img src="/first.webp" alt="First Place" className="h-24 sm:h-36 w-auto" />
+          <p className="text-lg sm:text-xl font-bold">
+            <span className="text-yellow-400">#1</span>{' '}
+            <span className="text-white">{leaderboard[0]?.name}</span>
+          </p>
+        </div>
+        <div className="flex flex-col items-center">
+          <img src="/third.webp" alt="Third Place" className="h-20 sm:h-28 w-auto" />
+          <p className="text-lg sm:text-xl font-bold">
+            <span className="text-yellow-400">#3</span>{' '}
+            <span className="text-white">{leaderboard[2]?.name}</span>
+          </p>
+        </div>
+      </div>
+
+      {/* Leaderboard (No Border, No Vertical Scrollbar) */}
+      <div className="w-full max-w-5xl rounded-lg shadow-lg mt-10">
+        {/* Scrollable Wrapper for Headings + Player Rows */}
+        <div className="w-full overflow-x-auto">
+          {/* Column Headers */}
+          <div className="min-w-[700px] bg-black/50 backdrop-blur-md p-4 flex text-gray-200 font-semibold text-lg">
+            <div className="w-1/12 text-center">Rank</div>
+            <div className="w-1/6 text-center">UserId</div>
+            <div className="w-1/6 text-center">Name</div>
+            <div className="w-1/6 text-center">Level</div>
+            <div className="w-1/6 text-center">Moves</div>
+            <div className="w-1/6 text-center">Time_Taken</div>
+            <div className="w-1/6 text-center">Points_Scored</div>
+          </div>
+
+          {/* Player Rows (Hover Effect Removed) */}
+          <div className="w-full">
+            {leaderboard.map((player, index) => {
+              // Set custom styles for top 3 players
+              let bgColor = 'bg-black/30'; // Default background
+              let textColor = 'text-gray-300'; // Default text color
+
+              if (index === 0) {
+                bgColor = 'bg-yellow-500/80'; // Golden background (Rank 1)
+
+              } else if (index === 1) {
+                bgColor = 'bg-gray-400/80'; // Silver background (Rank 2)
+                
+              } else if (index === 2) {
+                bgColor = 'bg-red-900/80'; // Dark Red background (Rank 3)
+               
+              }
+
+              return (
+                <div
+                  key={index}
+                  className={`min-w-[700px] ${bgColor} backdrop-blur-lg p-4 rounded-lg shadow-lg flex justify-between ${textColor} mt-2`}
+                >
+                  <div className="w-1/12 text-center font-bold text-lg">
+                    <span className="text-yellow-400">#{index + 1}</span>
+                  </div>
+                  <div className="w-1/6 text-center text-sm sm:text-base">{player.userid}</div>
+                  <div className="w-1/6 text-center text-sm sm:text-base">{player.name}</div>
+                  <div className="w-1/6 text-center text-sm sm:text-base">{player.level}</div>
+                  <div className="w-1/6 text-center text-sm sm:text-base">{player.moves}</div>
+                  <div className="w-1/6 text-center text-sm sm:text-base">{player.time}</div>
+                  <div className="w-1/6 text-center text-sm sm:text-base">{player.points}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
