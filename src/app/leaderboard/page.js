@@ -3,95 +3,22 @@ import { useState, useEffect } from 'react'
 
 export default function Home() {
   const [leaderboard, setLeaderboard] = useState([])
+  const [data, setData] = useState(null)
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
-      const data = [
-        {
-          userid: 'U101',
-          name: 'Askshat_Singh',
-          level: 'Expert',
-          moves: 36,
-          time: 126,
-          points: 4,
-        },
-        {
-          userid: 'U102',
-          name: 'Saumya_Sharma',
-          level: 'Advanced',
-          moves: 42,
-          time: 156,
-          points: 4,
-        },
-        {
-          userid: 'U103',
-          name: 'Khushi Pandey',
-          level: 'Intermediate',
-          moves: 28,
-          time: 110,
-          points: 3,
-        },
-        {
-          userid: 'U104',
-          name: 'Saket_Sarkaar',
-          level: 'Advanced',
-          moves: 33,
-          time: 124,
-          points: 3,
-        },
-        {
-          userid: 'U105',
-          name: 'Thala_fra_Reason',
-          level: 'Expert',
-          moves: 38,
-          time: 135,
-          points: 3,
-        },
-        {
-          userid: 'U106',
-          name: 'Virat_Kohli',
-          level: 'Expert',
-          moves: 46,
-          time: 176,
-          points: 3,
-        },
-        {
-          userid: 'U107',
-          name: 'Rohit_Sharma',
-          level: 'Intermediate',
-          moves: 46,
-          time: 176,
-          points: 3,
-        },
-        {
-          userid: 'U108',
-          name: 'Yuvraj_Singh',
-          level: 'Advanced',
-          moves: 46,
-          time: 176,
-          points: 3,
-        },
-        {
-          userid: 'U109',
-          name: 'Bumrah',
-          level: 'Beginner',
-          moves: 46,
-          time: 176,
-          points: 3,
-        },
-        {
-          userid: 'U110',
-          name: 'Chahal',
-          level: 'Beginner',
-          moves: 46,
-          time: 176,
-          points: 3,
-        },
-      ]
-      setLeaderboard(data)
+      try {
+        const response = await fetch('/api/leaderboard')
+        const data = await response.json()
+        console.log('response', data)
+        setLeaderboard(data.leaderboard)
+      } catch (err) {
+        console.log(err)
+      }
+      // setLeaderboard(data)
     }
     fetchLeaderboard()
-    const interval = setInterval(fetchLeaderboard, 5000)
+    const interval = setInterval(fetchLeaderboard, 500000)
     return () => clearInterval(interval)
   }, [])
 

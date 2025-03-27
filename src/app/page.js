@@ -22,13 +22,13 @@ import {
 // Import the MazeSolver class
 import { MazeSolver } from '@/lib/maze-solver'
 import RulesModal from '@/components/RulesModal'
+import Link from 'next/link'
 
 export default function MazeGame() {
   // Game states
   const [gameState, setGameState] = useState('start') // start, playing, paused, completed, gameover
   const [currentLevel, setCurrentLevel] = useState(1)
   const [showRules, setShowRules] = useState(false)
-  const [showLeaderboard, setShowLeaderboard] = useState(false)
   const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 })
   const [hasKey, setHasKey] = useState(false)
   const [maze, setMaze] = useState(null)
@@ -37,13 +37,6 @@ export default function MazeGame() {
   const [moves, setMoves] = useState(0)
   const [optimalPath, setOptimalPath] = useState([])
   const [elapsedTime, setElapsedTime] = useState(0) // New state for elapsed time counter
-  const [leaderboard, setLeaderboard] = useState([
-    { name: 'Alex', level: 3, score: 950 },
-    { name: 'Taylor', level: 3, score: 920 },
-    { name: 'Jordan', level: 2, score: 780 },
-    { name: 'Casey', level: 2, score: 750 },
-    { name: 'Riley', level: 1, score: 650 },
-  ])
 
   const timerRef = useRef(null)
   const elapsedTimerRef = useRef(null) // Separate ref for elapsed time counter
@@ -179,14 +172,7 @@ export default function MazeGame() {
       setGameState('completed')
     } else {
       // Game finished - add to leaderboard
-      const newLeaderboard = [
-        ...leaderboard,
-        { name: 'You', level: 3, score: score + levelScore },
-      ]
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 10)
 
-      setLeaderboard(newLeaderboard)
       setGameState('gameover')
     }
   }
@@ -407,8 +393,8 @@ export default function MazeGame() {
                 <Info size={18} className="text-yellow-300" />
                 <span className="font-bold">RULES</span>
               </button>
-              <button
-                onClick={() => setShowLeaderboard(true)}
+              <Link
+                href={'/leaderboard'}
                 className="px-6 py-3 rounded-lg flex items-center space-x-2 transition-all duration-200 hover:bg-blue-600"
                 style={{
                   background:
@@ -419,7 +405,7 @@ export default function MazeGame() {
               >
                 <Trophy size={18} className="text-yellow-300" />
                 <span className="font-bold">HIGH SCORES</span>
-              </button>
+              </Link>
             </div>
 
             {/* Bottom Pac-Man dots decoration */}
@@ -938,8 +924,8 @@ export default function MazeGame() {
               <span>PLAY AGAIN</span>
             </button>
 
-            <button
-              onClick={() => setShowLeaderboard(true)}
+            <Link
+              href="/leaderboard"
               className="px-6 py-3 rounded-lg flex items-center space-x-2 transition-all duration-200 hover:bg-blue-600"
               style={{
                 background: 'linear-gradient(135deg, #0000AA 0%, #0000DD 100%)',
@@ -949,7 +935,7 @@ export default function MazeGame() {
             >
               <Trophy size={18} className="text-yellow-300" />
               <span className="font-bold">HIGH SCORES</span>
-            </button>
+            </Link>
 
             {/* Pac-Man dots decoration - bottom */}
             <div className="absolute bottom-0 left-0 w-full h-6 flex justify-around items-center">
