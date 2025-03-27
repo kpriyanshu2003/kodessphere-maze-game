@@ -10,14 +10,13 @@ export default function Home() {
       try {
         const response = await fetch('/api/leaderboard')
         const data = await response.json()
-        console.log('response', data)
         setLeaderboard(data.leaderboard)
       } catch (err) {
         console.log(err)
       }
     }
     fetchLeaderboard()
-    const interval = setInterval(fetchLeaderboard, 500000)
+    const interval = setInterval(fetchLeaderboard, 5000)
     return () => clearInterval(interval)
   }, [])
 
@@ -82,63 +81,59 @@ export default function Home() {
       </div>
 
       {/* Leaderboard (No Border, No Vertical Scrollbar) */}
+      {/* Leaderboard Table */}
       <div className="w-full max-w-5xl rounded-lg shadow-lg mt-10">
-        {/* Scrollable Wrapper for Headings + Player Rows */}
         <div className="w-full overflow-x-auto">
           {/* Column Headers */}
           <div className="min-w-[700px] bg-black/50 backdrop-blur-md p-4 flex text-gray-200 font-semibold text-lg">
-            <div className="w-1/12 text-center">Rank</div>
-            <div className="w-1/6 text-center">UserId</div>
-            <div className="w-1/6 text-center">Name</div>
-            <div className="w-1/6 text-center">Level</div>
-            <div className="w-1/6 text-center">Moves</div>
-            <div className="w-1/6 text-center">Time_Taken</div>
-            <div className="w-1/6 text-center">Points_Scored</div>
+            {[
+              'Rank',
+              'UserId',
+              'Name',
+              'Level',
+              'Moves',
+              'Time Taken',
+              'Points Scored',
+            ].map((header, index) => (
+              <div key={index} className="w-1/6 text-center">
+                {header}
+              </div>
+            ))}
           </div>
 
-          {/* Player Rows (Hover Effect Removed) */}
+          {/* Player Rows */}
           <div className="w-full">
             {leaderboard.map((player, index) => {
-              // Set custom styles for top 3 players
-              let bgColor = 'bg-black/30' // Default background
-              let textColor = 'text-gray-300' // Default text color
-
-              if (index === 0) {
-                bgColor = 'bg-yellow-500/80' // Golden background (Rank 1)
-              } else if (index === 1) {
-                bgColor = 'bg-gray-400/80' // Silver background (Rank 2)
-              } else if (index === 2) {
-                bgColor = 'bg-red-900/80' // Dark Red background (Rank 3)
-              }
+              const rankStyles = [
+                'bg-yellow-500/80', // Rank 1 - Gold
+                'bg-gray-400/80', // Rank 2 - Silver
+                'bg-red-900/80', // Rank 3 - Bronze
+              ]
+              const bgColor = rankStyles[index] || 'bg-black/30' // Default for ranks > 3
 
               return (
                 <div
-                  key={index}
-                  className={`min-w-[700px] ${bgColor} backdrop-blur-lg p-4 rounded-lg shadow-lg flex justify-between ${textColor} mt-2`}
+                  key={player.user.id}
+                  className={`min-w-[700px] ${bgColor} backdrop-blur-lg p-4 rounded-lg shadow-lg flex justify-between text-gray-300 mt-2`}
                 >
                   <div className="w-1/12 text-center font-bold text-lg">
                     <span className="text-yellow-400">#{index + 1}</span>
                   </div>
-                  <div className="w-1/6 text-center text-sm sm:text-base">
-                    {player.user.id}
-                  </div>
-                  <div className="w-1/6 text-center text-sm sm:text-base">
-                    {player.user.name}
-                  </div>
-                  <div className="w-1/6 text-center text-sm sm:text-base">
-                    {player.level}
-                  </div>
-                  <div className="w-1/6 text-center text-sm sm:text-base">
-                    {player.moves}
-                  </div>
-                  <div className="w-1/6 text-center text-sm sm:text-base">
-                    {player.totalTimeTaken === ''
-                      ? '00:00:00'
-                      : player.totalTimeTaken}
-                  </div>
-                  <div className="w-1/6 text-center text-sm sm:text-base">
-                    {player.totalPointsScored}
-                  </div>
+                  {[
+                    player.user.id,
+                    player.user.name,
+                    player.level,
+                    player.moves,
+                    player.totalTimeTaken || '00:00:00',
+                    player.totalPointsScored,
+                  ].map((value, idx) => (
+                    <div
+                      key={idx}
+                      className="w-1/6 text-center text-sm sm:text-base"
+                    >
+                      {value}
+                    </div>
+                  ))}
                 </div>
               )
             })}
