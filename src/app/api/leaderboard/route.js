@@ -34,7 +34,8 @@ export async function GET() {
 
 export async function POST(req) {
   try {
-    const { name, email, level, score, moves } = await req.json()
+    const { name, email, level, score, moves, totalTimeTaken } =
+      await req.json()
 
     if (!name || !email) {
       return NextResponse.json(
@@ -71,7 +72,7 @@ export async function POST(req) {
         data: {
           level: level ?? 1,
           moves: moves ?? 0,
-          totalTimeTaken: '',
+          totalTimeTaken: totalTimeTaken ?? '',
           totalPointsScored: score ?? leaderboard.totalPointsScored,
         },
       })

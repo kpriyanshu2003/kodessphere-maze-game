@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
-export default function Home() {
+export default function Register({ setUser }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -49,6 +49,7 @@ export default function Home() {
     }
 
     try {
+      console.log('Sending')
       const response = await fetch('/api/leaderboard', {
         method: 'POST',
         headers: {
@@ -57,15 +58,20 @@ export default function Home() {
         body: JSON.stringify({ name, email }),
       })
 
-      const data = await response.json()
-      console.log('data', data)
-
       if (!response.ok) {
         throw new Error(data.message || 'Something went wrong')
       }
 
+      const data = await response.json()
+      console.log('data', data)
+
+      if (data && data.user) {
+        setUser(data.user)
+      }
+
       setSuccess(true)
     } catch (error) {
+      console.log('error', error)
       setError(error.message)
     }
   }
