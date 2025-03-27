@@ -21,13 +21,14 @@ import {
 
 // Import the MazeSolver class
 import { MazeSolver } from '@/lib/maze-solver'
+import RulesModal from '@/components/RulesModal'
+import Link from 'next/link'
 
 export default function MazeGame() {
   // Game states
   const [gameState, setGameState] = useState('start') // start, playing, paused, completed, gameover
   const [currentLevel, setCurrentLevel] = useState(1)
   const [showRules, setShowRules] = useState(false)
-  const [showLeaderboard, setShowLeaderboard] = useState(false)
   const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 })
   const [hasKey, setHasKey] = useState(false)
   const [maze, setMaze] = useState(null)
@@ -36,13 +37,6 @@ export default function MazeGame() {
   const [moves, setMoves] = useState(0)
   const [optimalPath, setOptimalPath] = useState([])
   const [elapsedTime, setElapsedTime] = useState(0) // New state for elapsed time counter
-  const [leaderboard, setLeaderboard] = useState([
-    { name: 'Alex', level: 3, score: 950 },
-    { name: 'Taylor', level: 3, score: 920 },
-    { name: 'Jordan', level: 2, score: 780 },
-    { name: 'Casey', level: 2, score: 750 },
-    { name: 'Riley', level: 1, score: 650 },
-  ])
 
   const timerRef = useRef(null)
   const elapsedTimerRef = useRef(null) // Separate ref for elapsed time counter
@@ -104,7 +98,7 @@ export default function MazeGame() {
     if (gameState === 'playing') {
       // Elapsed time counter (counting up)
       elapsedTimerRef.current = setInterval(() => {
-        setElapsedTime(prev => prev + 1)
+        setElapsedTime((prev) => prev + 1)
       }, 1000)
     } else {
       // Clear timer when not playing
@@ -178,14 +172,7 @@ export default function MazeGame() {
       setGameState('completed')
     } else {
       // Game finished - add to leaderboard
-      const newLeaderboard = [
-        ...leaderboard,
-        { name: 'You', level: 3, score: score + levelScore },
-      ]
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 10)
 
-      setLeaderboard(newLeaderboard)
       setGameState('gameover')
     }
   }
@@ -214,7 +201,7 @@ export default function MazeGame() {
 
   // Render the maze
   const renderMaze = () => {
-    if (!maze) return null;
+    if (!maze) return null
 
     return (
       <div
@@ -227,42 +214,42 @@ export default function MazeGame() {
           padding: '12px',
           borderRadius: '12px',
           boxShadow: '0 0 20px rgba(0, 162, 255, 0.5)',
-          border: '4px solid #0066cc'
+          border: '4px solid #0066cc',
         }}
       >
         {maze.map((row, rowIndex) =>
           row.map((cell, colIndex) => {
             const isPlayer =
-              playerPosition.x === rowIndex && playerPosition.y === colIndex;
+              playerPosition.x === rowIndex && playerPosition.y === colIndex
 
             return (
               <div
                 key={`${rowIndex}-${colIndex}`}
                 className={`
                   relative aspect-square transition-all duration-200
-                  ${
-                    cell.isBlocked
-                      ? 'bg-blue-700' 
-                      : 'bg-black'
-                  }
-                  ${
-                    cell.isStart ? 'bg-black' : ''
-                  }
+                  ${cell.isBlocked ? 'bg-blue-700' : 'bg-black'}
+                  ${cell.isStart ? 'bg-black' : ''}
                   ${cell.isKey ? 'bg-black' : ''}
                   ${cell.isGoal ? 'bg-black' : ''}
                 `}
                 style={{
                   boxSizing: 'border-box',
-                  boxShadow: cell.isBlocked ? 'inset 0 0 0 2px #0066cc' : 'none',
+                  boxShadow: cell.isBlocked
+                    ? 'inset 0 0 0 2px #0066cc'
+                    : 'none',
                   outline: cell.isBlocked ? '1px solid #0088ff' : 'none',
                   position: 'relative',
                   zIndex: cell.isBlocked ? 1 : 0,
                 }}
               >
-                {!cell.isBlocked && !isPlayer && !cell.isKey && !cell.isGoal && !cell.isStart && 
-                  <div className="absolute inset-0 m-auto w-1.5 h-1.5 bg-blue-300 rounded-full opacity-50"></div>
-                }
-                
+                {!cell.isBlocked &&
+                  !isPlayer &&
+                  !cell.isKey &&
+                  !cell.isGoal &&
+                  !cell.isStart && (
+                    <div className="absolute inset-0 m-auto w-1.5 h-1.5 bg-blue-300 rounded-full opacity-50"></div>
+                  )}
+
                 {cell.isStart && !isPlayer && (
                   <Home
                     className="absolute inset-0 m-auto text-green-400"
@@ -293,39 +280,48 @@ export default function MazeGame() {
                   </div>
                 )}
               </div>
-            );
-          })
+            )
+          }),
         )}
       </div>
-    );
-  };
+    )
+  }
 
   // Render game screens based on state
   const renderGameScreen = () => {
     switch (gameState) {
       case 'start':
         return (
-          <div className="flex flex-col items-center justify-center space-y-8 p-8 rounded-xl shadow-2xl max-w-2xl w-full mx-auto text-white relative overflow-hidden" 
-               style={{
-                 background: 'linear-gradient(180deg, #000033 0%, #000066 100%)',
-                 boxShadow: '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
-                 border: '4px solid #0000AA'
-               }}>
+          <div
+            className="flex flex-col items-center justify-center space-y-8 p-8 rounded-xl shadow-2xl max-w-2xl w-full mx-auto text-white relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(180deg, #000033 0%, #000066 100%)',
+              boxShadow:
+                '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
+              border: '4px solid #0000AA',
+            }}
+          >
             {/* Pac-Man dots decoration */}
             <div className="absolute top-0 left-0 w-full h-8 flex justify-around items-center">
               {[...Array(12)].map((_, i) => (
-                <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-yellow-300"
+                ></div>
               ))}
             </div>
-            
-            <h1 className="text-5xl font-bold text-center text-yellow-300"
-                style={{
-                  textShadow: '0 0 10px rgba(255, 255, 0, 0.7), 0 0 20px rgba(255, 255, 0, 0.5)',
-                  fontFamily: '"Press Start 2P", cursive, system-ui'
-                }}>
+
+            <h1
+              className="text-5xl font-bold text-center text-yellow-300"
+              style={{
+                textShadow:
+                  '0 0 10px rgba(255, 255, 0, 0.7), 0 0 20px rgba(255, 255, 0, 0.5)',
+                fontFamily: '"Press Start 2P", cursive, system-ui',
+              }}
+            >
               MAZE <span className="text-white">ADVENTURE</span>
             </h1>
-            
+
             <div className="w-full max-w-sm">
               <div className="grid grid-cols-3 gap-4 mb-8">
                 {[1, 2, 3].map((level) => (
@@ -333,9 +329,10 @@ export default function MazeGame() {
                     key={level}
                     className="text-center p-3 rounded-lg transform transition-all duration-200 hover:scale-105 hover:shadow-lg cursor-pointer relative overflow-hidden"
                     style={{
-                      background: 'linear-gradient(135deg, #0000AA 0%, #0000FF 100%)',
+                      background:
+                        'linear-gradient(135deg, #0000AA 0%, #0000FF 100%)',
                       border: '3px solid #0000DD',
-                      boxShadow: 'inset 0 0 10px rgba(0, 0, 255, 0.5)'
+                      boxShadow: 'inset 0 0 10px rgba(0, 0, 255, 0.5)',
                     }}
                   >
                     {/* Pac-Man maze pattern */}
@@ -343,32 +340,37 @@ export default function MazeGame() {
                       {[...Array(4)].map((_, row) => (
                         <div key={row} className="flex justify-between">
                           {[...Array(4)].map((_, col) => (
-                            <div key={col} className="w-1 h-1 bg-yellow-300 m-1"></div>
+                            <div
+                              key={col}
+                              className="w-1 h-1 bg-yellow-300 m-1"
+                            ></div>
                           ))}
                         </div>
                       ))}
                     </div>
-                    
+
                     <div className="text-2xl font-bold mb-1">{level}</div>
-                    <div className="text-xs font-bold text-yellow-300">{levels[level].name}</div>
+                    <div className="text-xs font-bold text-yellow-300">
+                      {levels[level].name}
+                    </div>
                     <div className="text-xs mt-1 text-blue-200">
                       {levels[level].size}×{levels[level].size}
                     </div>
-                    
+
                     {/* Small Pac-Man icon next to the level */}
                     <div className="absolute top-2 right-2 w-3 h-3 bg-yellow-300 rounded-full"></div>
                   </div>
                 ))}
               </div>
             </div>
-            
+
             <button
               onClick={startGame}
               className="px-10 py-4 rounded-full text-black font-bold text-xl transform transition-all duration-300 hover:scale-105 flex items-center space-x-3 animate-pulse"
               style={{
                 background: 'linear-gradient(to right, #FFFF00, #FFCC00)',
                 boxShadow: '0 0 15px rgba(255, 255, 0, 0.7)',
-                border: '3px solid #FFAA00'
+                border: '3px solid #FFAA00',
               }}
             >
               <div className="w-6 h-6 bg-black rounded-full relative">
@@ -376,38 +378,43 @@ export default function MazeGame() {
               </div>
               <span>START GAME</span>
             </button>
-            
+
             <div className="flex space-x-6 mt-4">
               <button
                 onClick={() => setShowRules(true)}
                 className="px-6 py-3 rounded-lg flex items-center space-x-2 transition-all duration-200 hover:bg-blue-600"
                 style={{
-                  background: 'linear-gradient(135deg, #0000AA 0%, #0000DD 100%)',
+                  background:
+                    'linear-gradient(135deg, #0000AA 0%, #0000DD 100%)',
                   border: '2px solid #0000FF',
-                  boxShadow: '0 0 10px rgba(0, 0, 255, 0.5)'
+                  boxShadow: '0 0 10px rgba(0, 0, 255, 0.5)',
                 }}
               >
                 <Info size={18} className="text-yellow-300" />
                 <span className="font-bold">RULES</span>
               </button>
-              <button
-                onClick={() => setShowLeaderboard(true)}
+              <Link
+                href={'/leaderboard'}
                 className="px-6 py-3 rounded-lg flex items-center space-x-2 transition-all duration-200 hover:bg-blue-600"
                 style={{
-                  background: 'linear-gradient(135deg, #0000AA 0%, #0000DD 100%)',
+                  background:
+                    'linear-gradient(135deg, #0000AA 0%, #0000DD 100%)',
                   border: '2px solid #0000FF',
-                  boxShadow: '0 0 10px rgba(0, 0, 255, 0.5)'
+                  boxShadow: '0 0 10px rgba(0, 0, 255, 0.5)',
                 }}
               >
                 <Trophy size={18} className="text-yellow-300" />
                 <span className="font-bold">HIGH SCORES</span>
-              </button>
+              </Link>
             </div>
-            
+
             {/* Bottom Pac-Man dots decoration */}
             <div className="absolute bottom-0 left-0 w-full h-8 flex justify-around items-center">
               {[...Array(12)].map((_, i) => (
-                <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-yellow-300"
+                ></div>
               ))}
             </div>
           </div>
@@ -418,7 +425,9 @@ export default function MazeGame() {
           <div className="flex flex-col items-center w-full max-w-4xl mx-auto">
             <div className="w-full flex justify-between items-center mb-4 px-4">
               <div className="text-center">
-                <h2 className="text-xl font-bold text-blue-400">Level {currentLevel}</h2>
+                <h2 className="text-xl font-bold text-blue-400">
+                  Level {currentLevel}
+                </h2>
                 <p className="text-sm text-blue-300">
                   {levels[currentLevel].name}
                 </p>
@@ -430,7 +439,9 @@ export default function MazeGame() {
                   } text-white border border-blue-400`}
                 >
                   <Clock size={16} className="text-blue-300" />
-                  <span className="font-bold">Elapsed: {formatTime(elapsedTime)}</span>
+                  <span className="font-bold">
+                    Elapsed: {formatTime(elapsedTime)}
+                  </span>
                 </div>
                 <button
                   onClick={() => setShowRules(true)}
@@ -441,9 +452,11 @@ export default function MazeGame() {
                 </button>
               </div>
             </div>
-          
-            <div className="bg-black p-4 rounded-xl shadow-xl w-full" 
-                style={{boxShadow: '0 0 20px rgba(37, 99, 235, 0.4)'}}>
+
+            <div
+              className="bg-black p-4 rounded-xl shadow-xl w-full"
+              style={{ boxShadow: '0 0 20px rgba(37, 99, 235, 0.4)' }}
+            >
               <div className="flex justify-center ">
                 {hasKey && (
                   <div className="bg-black text-yellow-400 px-3 py-1 rounded-full flex items-center space-x-2 animate-pulse border border-yellow-500">
@@ -494,57 +507,74 @@ export default function MazeGame() {
 
       case 'paused':
         return (
-          <div className="flex flex-col items-center justify-center space-y-6 p-8 rounded-xl shadow-2xl max-w-md w-full mx-auto text-white relative overflow-hidden"
+          <div
+            className="flex flex-col items-center justify-center space-y-6 p-8 rounded-xl shadow-2xl max-w-md w-full mx-auto text-white relative overflow-hidden"
             style={{
               background: 'linear-gradient(180deg, #000033 0%, #000066 100%)',
-              boxShadow: '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
-              border: '4px solid #0000AA'
-            }}>
+              boxShadow:
+                '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
+              border: '4px solid #0000AA',
+            }}
+          >
             {/* Pac-Man dots decoration - top */}
             <div className="absolute top-0 left-0 w-full h-6 flex justify-around items-center">
               {[...Array(10)].map((_, i) => (
-                <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-yellow-300"
+                ></div>
               ))}
             </div>
-            
-            <h2 className="text-4xl font-bold text-yellow-300 mb-2"
+
+            <h2
+              className="text-4xl font-bold text-yellow-300 mb-2"
               style={{
                 textShadow: '0 0 10px rgba(255, 255, 0, 0.7)',
-                fontFamily: '"Press Start 2P", cursive, system-ui'
-              }}>
+                fontFamily: '"Press Start 2P", cursive, system-ui',
+              }}
+            >
               PAUSED
             </h2>
-            
+
             <div className="w-full space-y-3 border-2 border-blue-500 rounded-lg p-4 bg-black bg-opacity-60">
               <div className="flex justify-between items-center border-b border-blue-800 pb-2">
                 <span className="text-blue-300">SCORE:</span>
-                <span className="text-yellow-300 font-bold text-xl">{score}</span>
+                <span className="text-yellow-300 font-bold text-xl">
+                  {score}
+                </span>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <span className="text-blue-300">LEVEL:</span>
                 <span className="text-white">
-                  {currentLevel} - <span className="text-yellow-300">{levels[currentLevel].name}</span>
+                  {currentLevel} -{' '}
+                  <span className="text-yellow-300">
+                    {levels[currentLevel].name}
+                  </span>
                 </span>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <div className="flex items-center">
                   <Clock size={14} className="text-blue-300 mr-2" />
                   <span className="text-blue-300">TIME LEFT:</span>
                 </div>
-                <span className="text-white font-mono">{formatTime(timer)}</span>
+                <span className="text-white font-mono">
+                  {formatTime(timer)}
+                </span>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <div className="flex items-center">
                   <Clock size={14} className="text-blue-300 mr-2" />
                   <span className="text-blue-300">ELAPSED:</span>
                 </div>
-                <span className="text-white font-mono">{formatTime(elapsedTime)}</span>
+                <span className="text-white font-mono">
+                  {formatTime(elapsedTime)}
+                </span>
               </div>
             </div>
-            
+
             <div className="flex space-x-4 mt-4">
               <button
                 onClick={() => setGameState('playing')}
@@ -552,7 +582,7 @@ export default function MazeGame() {
                 style={{
                   background: 'linear-gradient(to bottom, #FFFF00, #FFCC00)',
                   border: '3px solid #FFAA00',
-                  boxShadow: '0 0 10px rgba(255, 255, 0, 0.5)'
+                  boxShadow: '0 0 10px rgba(255, 255, 0, 0.5)',
                 }}
               >
                 <div className="w-5 h-5 bg-black rounded-full relative">
@@ -560,23 +590,26 @@ export default function MazeGame() {
                 </div>
                 <span className="font-bold text-black">RESUME</span>
               </button>
-              
+
               <button
                 onClick={restartGame}
                 className="px-6 py-3 rounded-lg flex items-center space-x-2 bg-blue-700 hover:bg-blue-600 transition-all border-2 border-blue-500"
                 style={{
-                  boxShadow: '0 0 10px rgba(0, 0, 255, 0.5)'
+                  boxShadow: '0 0 10px rgba(0, 0, 255, 0.5)',
                 }}
               >
                 <RotateCcw size={20} className="text-yellow-300" />
                 <span className="font-bold">RESTART</span>
               </button>
             </div>
-            
+
             {/* Pac-Man dots decoration - bottom */}
             <div className="absolute bottom-0 left-0 w-full h-6 flex justify-around items-center">
               {[...Array(10)].map((_, i) => (
-                <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-yellow-300"
+                ></div>
               ))}
             </div>
           </div>
@@ -584,50 +617,66 @@ export default function MazeGame() {
 
       case 'completed':
         return (
-          <div className="flex flex-col items-center justify-center space-y-6 p-8 rounded-xl shadow-2xl max-w-md w-full mx-auto text-white relative overflow-hidden"
+          <div
+            className="flex flex-col items-center justify-center space-y-6 p-8 rounded-xl shadow-2xl max-w-md w-full mx-auto text-white relative overflow-hidden"
             style={{
               background: 'linear-gradient(180deg, #000033 0%, #000066 100%)',
-              boxShadow: '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
-              border: '4px solid #0000AA'
-            }}>
+              boxShadow:
+                '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
+              border: '4px solid #0000AA',
+            }}
+          >
             {/* Pac-Man dots decoration - top */}
             <div className="absolute top-0 left-0 w-full h-6 flex justify-around items-center">
               {[...Array(10)].map((_, i) => (
-                <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-yellow-300"
+                ></div>
               ))}
             </div>
-            
-            <h2 className="text-3xl font-bold text-center text-yellow-300"
+
+            <h2
+              className="text-3xl font-bold text-center text-yellow-300"
               style={{
                 textShadow: '0 0 10px rgba(255, 255, 0, 0.7)',
-                fontFamily: '"Press Start 2P", cursive, system-ui'
-              }}>
-              LEVEL {currentLevel}<br />
+                fontFamily: '"Press Start 2P", cursive, system-ui',
+              }}
+            >
+              LEVEL {currentLevel}
+              <br />
               <span className="text-white">COMPLETE!</span>
             </h2>
-            
+
             {/* Pac-Man eating animation */}
             <div className="relative mb-4">
-              <div className="w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center animate-pulse" 
-                style={{boxShadow: '0 0 20px rgba(255, 255, 0, 0.7)'}}>
-                <div className="absolute w-0 h-0 right-1 
+              <div
+                className="w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center animate-pulse"
+                style={{ boxShadow: '0 0 20px rgba(255, 255, 0, 0.7)' }}
+              >
+                <div
+                  className="absolute w-0 h-0 right-1 
                   border-t-[12px] border-b-[12px] border-r-[24px] 
-                  border-t-transparent border-b-transparent border-r-black">
-                </div>
+                  border-t-transparent border-b-transparent border-r-black"
+                ></div>
               </div>
-              
+
               {/* Small ghosts fleeing */}
               <div className="absolute -top-4 -right-4 w-8 h-8 bg-pink-400 rounded-t-full animate-bounce"></div>
-              <div className="absolute -bottom-4 -left-4 w-8 h-8 bg-cyan-400 rounded-t-full animate-bounce" 
-                style={{animationDelay: '0.3s'}}></div>
+              <div
+                className="absolute -bottom-4 -left-4 w-8 h-8 bg-cyan-400 rounded-t-full animate-bounce"
+                style={{ animationDelay: '0.3s' }}
+              ></div>
             </div>
-            
-            <div className="w-full space-y-2 bg-black bg-opacity-60 rounded-lg p-4 border-2 border-blue-500"
-              style={{fontFamily: 'monospace'}}>
+
+            <div
+              className="w-full space-y-2 bg-black bg-opacity-60 rounded-lg p-4 border-2 border-blue-500"
+              style={{ fontFamily: 'monospace' }}
+            >
               <div className="text-center mb-3 text-xl font-bold text-yellow-300">
                 SCORE BREAKDOWN
               </div>
-              
+
               <div className="flex justify-between">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-yellow-300 rounded-full mr-2"></div>
@@ -635,7 +684,7 @@ export default function MazeGame() {
                 </div>
                 <span className="text-white">+ {timer * 5} PTS</span>
               </div>
-              
+
               <div className="flex justify-between">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-yellow-300 rounded-full mr-2"></div>
@@ -643,7 +692,7 @@ export default function MazeGame() {
                 </div>
                 <span className="text-white">{optimalPath.length} MOVES</span>
               </div>
-              
+
               <div className="flex justify-between">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-yellow-300 rounded-full mr-2"></div>
@@ -651,15 +700,17 @@ export default function MazeGame() {
                 </div>
                 <span className="text-white">{moves} MOVES</span>
               </div>
-              
+
               <div className="flex justify-between">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-red-400 rounded-full mr-2"></div>
                   <span className="text-blue-300">MOVE PENALTY:</span>
                 </div>
-                <span className="text-red-400">- {Math.max(0, moves - optimalPath.length) * 10} PTS</span>
+                <span className="text-red-400">
+                  - {Math.max(0, moves - optimalPath.length) * 10} PTS
+                </span>
               </div>
-              
+
               <div className="flex justify-between">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-yellow-300 rounded-full mr-2"></div>
@@ -667,39 +718,50 @@ export default function MazeGame() {
                 </div>
                 <span className="text-white">{formatTime(elapsedTime)}</span>
               </div>
-              
+
               <div className="border-t-2 border-blue-700 my-3 pt-3 flex justify-between font-bold">
                 <span className="text-yellow-300">LEVEL SCORE:</span>
                 <span className="text-yellow-300 text-xl">
-                  {500 + timer * 5 - Math.max(0, moves - optimalPath.length) * 10}
+                  {500 +
+                    timer * 5 -
+                    Math.max(0, moves - optimalPath.length) * 10}
                 </span>
               </div>
-              
+
               <div className="flex justify-between font-bold text-lg">
                 <span className="text-yellow-300">TOTAL SCORE:</span>
-                <span className="text-yellow-300 text-2xl" style={{textShadow: '0 0 5px rgba(255, 255, 0, 0.7)'}}>
-                  {score + 500 + timer * 5 - Math.max(0, moves - optimalPath.length) * 10}
+                <span
+                  className="text-yellow-300 text-2xl"
+                  style={{ textShadow: '0 0 5px rgba(255, 255, 0, 0.7)' }}
+                >
+                  {score +
+                    500 +
+                    timer * 5 -
+                    Math.max(0, moves - optimalPath.length) * 10}
                 </span>
               </div>
             </div>
-            
+
             <button
               onClick={nextLevel}
               className="px-10 py-4 rounded-full text-black font-bold text-xl transform transition-all duration-300 hover:scale-105 flex items-center space-x-3 animate-pulse mt-4"
               style={{
                 background: 'linear-gradient(to right, #FFFF00, #FFCC00)',
                 boxShadow: '0 0 15px rgba(255, 255, 0, 0.7)',
-                border: '3px solid #FFAA00'
+                border: '3px solid #FFAA00',
               }}
             >
               <span>NEXT LEVEL</span>
               <ChevronRight size={24} className="text-black" />
             </button>
-            
+
             {/* Pac-Man dots decoration - bottom */}
             <div className="absolute bottom-0 left-0 w-full h-6 flex justify-around items-center">
               {[...Array(10)].map((_, i) => (
-                <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-yellow-300"
+                ></div>
               ))}
             </div>
           </div>
@@ -707,33 +769,41 @@ export default function MazeGame() {
 
       case 'gameover':
         return (
-          <div className="flex flex-col items-center justify-center space-y-6 p-8 rounded-xl shadow-2xl max-w-md w-full mx-auto text-white relative overflow-hidden"
+          <div
+            className="flex flex-col items-center justify-center space-y-6 p-8 rounded-xl shadow-2xl max-w-md w-full mx-auto text-white relative overflow-hidden"
             style={{
               background: 'linear-gradient(180deg, #000033 0%, #000066 100%)',
-              boxShadow: '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
-              border: '4px solid #0000AA'
-            }}>
+              boxShadow:
+                '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
+              border: '4px solid #0000AA',
+            }}
+          >
             {/* Pac-Man dots decoration - top */}
             <div className="absolute top-0 left-0 w-full h-6 flex justify-around items-center">
               {[...Array(10)].map((_, i) => (
-                <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-yellow-300"
+                ></div>
               ))}
             </div>
-            
-            <h2 className="text-3xl font-bold text-center text-yellow-300"
+
+            <h2
+              className="text-3xl font-bold text-center text-yellow-300"
               style={{
                 textShadow: '0 0 10px rgba(255, 255, 0, 0.7)',
-                fontFamily: '"Press Start 2P", cursive, system-ui'
-              }}>
+                fontFamily: '"Press Start 2P", cursive, system-ui',
+              }}
+            >
               {timer === 0 ? "TIME'S UP!" : 'GAME COMPLETE!'}
             </h2>
-            
+
             {timer === 0 ? (
               <div className="relative mb-4">
                 <div className="w-24 h-24 bg-red-400 rounded-full flex items-center justify-center mb-4 animate-pulse">
                   <Clock size={48} className="text-red-900" />
                 </div>
-                
+
                 {/* Sad ghosts */}
                 <div className="absolute -top-2 -right-2 w-10 h-10">
                   <div className="w-full h-8 bg-pink-400 rounded-t-full"></div>
@@ -748,15 +818,18 @@ export default function MazeGame() {
               </div>
             ) : (
               <div className="relative mb-4">
-                <div className="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center mb-4 animate-pulse" 
-                  style={{boxShadow: '0 0 20px rgba(255, 255, 0, 0.7)'}}>
+                <div
+                  className="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center mb-4 animate-pulse"
+                  style={{ boxShadow: '0 0 20px rgba(255, 255, 0, 0.7)' }}
+                >
                   <Trophy size={48} className="text-yellow-900" />
-                  <div className="absolute right-3 top-1/3 w-0 h-0 
+                  <div
+                    className="absolute right-3 top-1/3 w-0 h-0 
                     border-t-[10px] border-b-[10px] border-r-[20px] 
-                    border-t-transparent border-b-transparent border-r-black">
-                  </div>
+                    border-t-transparent border-b-transparent border-r-black"
+                  ></div>
                 </div>
-                
+
                 {/* Scared ghosts */}
                 <div className="absolute -top-2 -right-2 w-10 h-10 animate-bounce">
                   <div className="w-full h-8 bg-blue-400 rounded-t-full"></div>
@@ -768,9 +841,11 @@ export default function MazeGame() {
                   <div className="absolute top-4 left-2 w-1 h-1 bg-white rounded-full"></div>
                   <div className="absolute top-4 right-2 w-1 h-1 bg-white rounded-full"></div>
                 </div>
-                
-                <div className="absolute -bottom-2 -left-2 w-10 h-10 animate-bounce" 
-                  style={{animationDelay: '0.3s'}}>
+
+                <div
+                  className="absolute -bottom-2 -left-2 w-10 h-10 animate-bounce"
+                  style={{ animationDelay: '0.3s' }}
+                >
                   <div className="w-full h-8 bg-blue-400 rounded-t-full"></div>
                   <div className="flex w-full">
                     <div className="w-1/3 h-2 bg-blue-400"></div>
@@ -783,50 +858,64 @@ export default function MazeGame() {
               </div>
             )}
 
-            <div className="w-full space-y-2 bg-black bg-opacity-60 rounded-lg p-4 border-2 border-blue-500"
-              style={{fontFamily: 'monospace'}}>
+            <div
+              className="w-full space-y-2 bg-black bg-opacity-60 rounded-lg p-4 border-2 border-blue-500"
+              style={{ fontFamily: 'monospace' }}
+            >
               <div className="text-center mb-3 text-xl font-bold text-yellow-300">
                 FINAL SCORE
               </div>
-              
+
               <div className="flex justify-between items-center border-b border-blue-800 pb-2">
                 <span className="text-blue-300">SCORE:</span>
-                <span className="text-yellow-300 font-bold text-2xl" 
-                  style={{textShadow: '0 0 5px rgba(255, 255, 0, 0.7)'}}>
+                <span
+                  className="text-yellow-300 font-bold text-2xl"
+                  style={{ textShadow: '0 0 5px rgba(255, 255, 0, 0.7)' }}
+                >
                   {score}
                 </span>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <span className="text-blue-300">LEVEL REACHED:</span>
                 <span className="text-white">
-                  {currentLevel} - <span className="text-yellow-300">{levels[currentLevel].name}</span>
+                  {currentLevel} -{' '}
+                  <span className="text-yellow-300">
+                    {levels[currentLevel].name}
+                  </span>
                 </span>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <div className="flex items-center">
                   <Clock size={14} className="text-blue-300 mr-2" />
                   <span className="text-blue-300">TOTAL TIME:</span>
                 </div>
-                <span className="text-white font-mono">{formatTime(elapsedTime)}</span>
+                <span className="text-white font-mono">
+                  {formatTime(elapsedTime)}
+                </span>
               </div>
-              
+
               {/* Pac-Man highscore decoration */}
               <div className="flex justify-center mt-3">
-                {[...Array(score > 500 ? 3 : score > 300 ? 2 : 1)].map((_, i) => (
-                  <div key={i} className="mx-1 w-5 h-5 bg-yellow-400 rounded-full"></div>
-                ))}
+                {[...Array(score > 500 ? 3 : score > 300 ? 2 : 1)].map(
+                  (_, i) => (
+                    <div
+                      key={i}
+                      className="mx-1 w-5 h-5 bg-yellow-400 rounded-full"
+                    ></div>
+                  ),
+                )}
               </div>
             </div>
-            
+
             <button
               onClick={restartGame}
               className="px-10 py-4 rounded-full text-black font-bold text-xl transform transition-all duration-300 hover:scale-105 flex items-center space-x-3 animate-pulse mt-4"
               style={{
                 background: 'linear-gradient(to right, #FFFF00, #FFCC00)',
                 boxShadow: '0 0 15px rgba(255, 255, 0, 0.7)',
-                border: '3px solid #FFAA00'
+                border: '3px solid #FFAA00',
               }}
             >
               <div className="w-6 h-6 bg-black rounded-full relative">
@@ -834,24 +923,27 @@ export default function MazeGame() {
               </div>
               <span>PLAY AGAIN</span>
             </button>
-            
-            <button
-              onClick={() => setShowLeaderboard(true)}
+
+            <Link
+              href="/leaderboard"
               className="px-6 py-3 rounded-lg flex items-center space-x-2 transition-all duration-200 hover:bg-blue-600"
               style={{
                 background: 'linear-gradient(135deg, #0000AA 0%, #0000DD 100%)',
                 border: '2px solid #0000FF',
-                boxShadow: '0 0 10px rgba(0, 0, 255, 0.5)'
+                boxShadow: '0 0 10px rgba(0, 0, 255, 0.5)',
               }}
             >
               <Trophy size={18} className="text-yellow-300" />
               <span className="font-bold">HIGH SCORES</span>
-            </button>
-            
+            </Link>
+
             {/* Pac-Man dots decoration - bottom */}
             <div className="absolute bottom-0 left-0 w-full h-6 flex justify-around items-center">
               {[...Array(10)].map((_, i) => (
-                <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-yellow-300"
+                ></div>
               ))}
             </div>
           </div>
@@ -863,276 +955,12 @@ export default function MazeGame() {
   }
 
   // Rules modal
-  const renderRulesModal = () => {
-    if (!showRules) return null
-
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-        <div className="rounded-xl shadow-2xl max-w-md w-full p-6 max-h-[80vh] overflow-y-auto relative text-white"
-          style={{
-            background: 'linear-gradient(180deg, #000033 0%, #000066 100%)',
-            boxShadow: '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
-            border: '4px solid #0000AA'
-          }}>
-          
-          {/* Close button - new addition */}
-          <button 
-            onClick={() => setShowRules(false)}
-            className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full z-10 transition-all duration-200 transform hover:scale-110"
-            style={{
-              background: 'linear-gradient(to bottom, #FFFF00, #FFCC00)',
-              border: '2px solid #FFAA00',
-              boxShadow: '0 0 10px rgba(255, 255, 0, 0.5)'
-            }}
-          >
-            <div className="relative w-4 h-4">
-              <div className="absolute w-full h-0.5 bg-black top-1/2 left-0 -translate-y-1/2 rotate-45"></div>
-              <div className="absolute w-full h-0.5 bg-black top-1/2 left-0 -translate-y-1/2 -rotate-45"></div>
-            </div>
-          </button>
-          
-          {/* Pac-Man dots decoration - top */}
-          <div className="absolute top-0 left-0 w-full h-6 flex justify-around items-center">
-            {[...Array(10)].map((_, i) => (
-              <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
-            ))}
-          </div>
-          
-          <h2 className="text-2xl font-bold mb-6 text-yellow-300 text-center"
-            style={{
-              textShadow: '0 0 10px rgba(255, 255, 0, 0.7)',
-              fontFamily: '"Press Start 2P", cursive, system-ui'
-            }}>
-            GAME RULES
-          </h2>
-  
-          <div className="space-y-6 bg-black bg-opacity-50 p-4 rounded-lg border-2 border-blue-500">
-            {/* Pacman icon */}
-            <div className="flex justify-center mb-4">
-              <div className="w-12 h-12 bg-yellow-400 rounded-full relative">
-                <div className="absolute right-2 top-1/3 w-0 h-0 
-                  border-t-[8px] border-b-[8px] border-r-[16px] 
-                  border-t-transparent border-b-transparent border-r-black">
-                </div>
-              </div>
-            </div>
-            
-            <div className="border-b-2 border-blue-700 pb-3">
-              <h3 className="font-bold text-lg text-yellow-300 flex items-center">
-                <div className="w-4 h-4 bg-yellow-300 rounded-full mr-2"></div>
-                OBJECTIVE
-              </h3>
-              <p className="text-blue-100 ml-6">
-                Navigate through the maze to collect the key and reach the goal
-                within the time limit.
-              </p>
-            </div>
-  
-            <div className="border-b-2 border-blue-700 pb-3">
-              <h3 className="font-bold text-lg text-yellow-300 flex items-center">
-                <div className="w-4 h-4 bg-yellow-300 rounded-full mr-2"></div>
-                CONTROLS
-              </h3>
-              <p className="text-blue-100 ml-6">
-                Use arrow keys or the on-screen buttons to move your character.
-              </p>
-              <div className="flex justify-center space-x-2 mt-2">
-                <div className="w-8 h-8 bg-blue-700 flex items-center justify-center rounded border-2 border-blue-500">
-                  <ArrowUp size={20} className="text-white" />
-                </div>
-                <div className="w-8 h-8 bg-blue-700 flex items-center justify-center rounded border-2 border-blue-500">
-                  <ArrowLeft size={20} className="text-white" />
-                </div>
-                <div className="w-8 h-8 bg-blue-700 flex items-center justify-center rounded border-2 border-blue-500">
-                  <ArrowDown size={20} className="text-white" />
-                </div>
-                <div className="w-8 h-8 bg-blue-700 flex items-center justify-center rounded border-2 border-blue-500">
-                  <ArrowRight size={20} className="text-white" />
-                </div>
-              </div>
-            </div>
-  
-            <div className="border-b-2 border-blue-700 pb-3">
-              <h3 className="font-bold text-lg text-yellow-300 flex items-center">
-                <div className="w-4 h-4 bg-yellow-300 rounded-full mr-2"></div>
-                LEVELS
-              </h3>
-              <ul className="ml-6 space-y-2 text-blue-100">
-                <li className="flex items-center">
-                  <div className="w-3 h-3 bg-pink-400 rounded-t-full mr-2"></div>
-                  <span className="font-bold text-yellow-200">Level 1:</span>
-                  <span className="ml-2">5×5 maze, 1 minute</span>
-                </li>
-                <li className="flex items-center">
-                  <div className="w-3 h-3 bg-cyan-400 rounded-t-full mr-2"></div>
-                  <span className="font-bold text-yellow-200">Level 2:</span>
-                  <span className="ml-2">8×8 maze, 1:30 minutes</span>
-                </li>
-                <li className="flex items-center">
-                  <div className="w-3 h-3 bg-orange-400 rounded-t-full mr-2"></div>
-                  <span className="font-bold text-yellow-200">Level 3:</span>
-                  <span className="ml-2">12×12 maze, 2 minutes</span>
-                </li>
-              </ul>
-            </div>
-  
-            <div className="border-b-2 border-blue-700 pb-3">
-              <h3 className="font-bold text-lg text-yellow-300 flex items-center">
-                <div className="w-4 h-4 bg-yellow-300 rounded-full mr-2"></div>
-                SCORING
-              </h3>
-              <ul className="ml-6 space-y-1 text-blue-100">
-                <li className="flex items-center">
-                  <div className="w-3 h-3 bg-yellow-300 rounded-full mr-2"></div>
-                  <span>Base score: 500 points per level</span>
-                </li>
-                <li className="flex items-center">
-                  <div className="w-3 h-3 bg-yellow-300 rounded-full mr-2"></div>
-                  <span>Time bonus: 5 points for each second left</span>
-                </li>
-                <li className="flex items-center">
-                  <div className="w-3 h-3 bg-red-400 rounded-full mr-2"></div>
-                  <span>Move penalty: -10 points per extra move</span>
-                </li>
-              </ul>
-            </div>
-  
-            <div className="bg-blue-900 bg-opacity-30 p-3 rounded-lg border border-blue-700">
-              <h3 className="font-bold text-lg text-yellow-300 flex items-center">
-                <div className="w-6 h-6 bg-yellow-400 rounded-full mr-2 relative">
-                  <div className="absolute right-1 top-1/3 w-0 h-0 
-                    border-t-[4px] border-b-[4px] border-r-[8px] 
-                    border-t-transparent border-b-transparent border-r-black">
-                  </div>
-                </div>
-                POWER-UP TIPS
-              </h3>
-              <ul className="ml-6 space-y-1 text-blue-100">
-                <li className="flex items-center">
-                  <div className="w-3 h-3 bg-yellow-300 rounded-full animate-pulse mr-2"></div>
-                  <span>Always collect the key before the goal</span>
-                </li>
-                <li className="flex items-center">
-                  <div className="w-3 h-3 bg-yellow-300 rounded-full animate-pulse mr-2"></div>
-                  <span>Find the shortest path for max score</span>
-                </li>
-                <li className="flex items-center">
-                  <div className="w-3 h-3 bg-yellow-300 rounded-full animate-pulse mr-2"></div>
-                  <span>Watch your time - the clock is ticking!</span>
-                </li>
-              </ul>
-              
-              {/* Ghost decorations */}
-              <div className="flex justify-end -mt-4">
-                <div className="w-8 h-8">
-                  <div className="w-full h-6 bg-pink-400 rounded-t-full"></div>
-                  <div className="flex w-full">
-                    <div className="w-1/3 h-2 bg-pink-400"></div>
-                    <div className="w-1/3 h-2 bg-pink-400"></div>
-                    <div className="w-1/3 h-2 bg-pink-400"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-  
-          <button
-            onClick={() => setShowRules(false)}
-            className="mt-6 w-full py-3 rounded-full text-black font-bold text-lg transform transition-all duration-300 hover:scale-105 flex items-center justify-center"
-            style={{
-              background: 'linear-gradient(to right, #FFFF00, #FFCC00)',
-              boxShadow: '0 0 15px rgba(255, 255, 0, 0.7)',
-              border: '3px solid #FFAA00'
-            }}
-          >
-            <div className="w-5 h-5 bg-black rounded-full relative mr-2">
-              <div className="absolute right-0 top-1/4 w-0 h-0 border-t-[5px] border-b-[5px] border-r-[8px] border-transparent border-r-black"></div>
-            </div>
-            GOT IT!
-          </button>
-          
-          {/* Pac-Man dots decoration - bottom */}
-          <div className="absolute bottom-0 left-0 w-full h-6 flex justify-around items-center">
-            {[...Array(10)].map((_, i) => (
-              <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // Leaderboard modal
-  const renderLeaderboardModal = () => {
-    if (!showLeaderboard) return null
-
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
-          <h2 className="text-2xl font-bold mb-4 text-purple-900 flex items-center">
-            <Trophy className="mr-2 text-yellow-500" />
-            Leaderboard
-          </h2>
-
-          <div className="overflow-hidden rounded-lg border border-gray-200">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-purple-100">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-purple-900 uppercase tracking-wider">
-                    Rank
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-purple-900 uppercase tracking-wider">
-                    Player
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-purple-900 uppercase tracking-wider">
-                    Level
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-purple-900 uppercase tracking-wider">
-                    Score
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {leaderboard.map((entry, index) => (
-                  <tr
-                    key={index}
-                    className={entry.name === 'You' ? 'bg-yellow-50' : ''}
-                  >
-                    <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {index + 1}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
-                      {entry.name}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
-                      {entry.level}
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm font-bold text-purple-700">
-                      {entry.score}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <button
-            onClick={() => setShowLeaderboard(false)}
-            className="mt-6 w-full py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-4xl">
         {renderGameScreen()}
-        {renderRulesModal()}
-        {renderLeaderboardModal()}
+        <RulesModal showRules={showRules} setShowRules={setShowRules} />
       </div>
     </div>
   )

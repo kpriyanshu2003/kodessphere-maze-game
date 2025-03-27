@@ -13,6 +13,7 @@ export async function GET() {
         { totalTimeTaken: 'asc' },
       ],
     })
+    console.log('Leaderboard', leaderboard)
 
     return NextResponse.json(
       {
