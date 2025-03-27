@@ -34,7 +34,7 @@ export async function GET() {
 
 export async function POST(req) {
   try {
-    const { name, email, level, score } = await req.json()
+    const { name, email, level, score, moves } = await req.json()
 
     if (!name || !email) {
       return NextResponse.json(
@@ -69,8 +69,8 @@ export async function POST(req) {
       leaderboard = await prisma.gameRecord.update({
         where: { id: leaderboard.id }, // Use the unique ID
         data: {
-          level: level ?? ((leaderboard.level + 1) % 3) + 1, // Update if provided
-          moves: 0,
+          level: level ?? 1,
+          moves: moves ?? 0,
           totalTimeTaken: '',
           totalPointsScored: score ?? leaderboard.totalPointsScored,
         },
@@ -80,7 +80,7 @@ export async function POST(req) {
       leaderboard = await prisma.gameRecord.create({
         data: {
           userId: user.id,
-          level: level ?? 1,
+          level: 1,
           moves: 0,
           totalTimeTaken: '',
           totalPointsScored: score ?? 0,

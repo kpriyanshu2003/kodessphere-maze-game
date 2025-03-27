@@ -3,13 +3,13 @@ import { useState, useEffect } from 'react'
 
 export default function Home() {
   const [leaderboard, setLeaderboard] = useState([])
-  const [data, setData] = useState(null)
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
         const response = await fetch('/api/leaderboard')
         const data = await response.json()
+        console.log('Leaderboard data', data)
         setLeaderboard(data.leaderboard)
       } catch (err) {
         console.log(err)

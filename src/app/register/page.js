@@ -1,129 +1,156 @@
-"use client";
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
+'use client'
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const [pacmanPosition, setPacmanPosition] = useState(0);
-  const [ghosts, setGhosts] = useState([]);
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
+  const [pacmanPosition, setPacmanPosition] = useState(0)
+  const [ghosts, setGhosts] = useState([])
 
   // Generate random ghost positions
   useEffect(() => {
-    const newGhosts = [];
+    const newGhosts = []
     for (let i = 0; i < 4; i++) {
       newGhosts.push({
         id: i,
         top: Math.floor(Math.random() * 80) + 10,
         left: Math.floor(Math.random() * 80) + 10,
-        color: ['red', 'pink', 'cyan', 'orange'][i]
-      });
+        color: ['red', 'pink', 'cyan', 'orange'][i],
+      })
     }
-    setGhosts(newGhosts);
-  }, []);
+    setGhosts(newGhosts)
+  }, [])
 
   // Animate Pacman movement
   useEffect(() => {
     const interval = setInterval(() => {
-      setPacmanPosition(prev => (prev + 1) % 100);
-    }, 100);
-    return () => clearInterval(interval);
-  }, []);
+      setPacmanPosition((prev) => (prev + 1) % 100)
+    }, 100)
+    return () => clearInterval(interval)
+  }, [])
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError('');
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
 
     // Validate email domain
     if (!email.endsWith('@kiit.ac.in')) {
-      setError('Email must be from @kiit.ac.in domain');
-      return;
+      setError('Email must be from @kiit.ac.in domain')
+      return
     }
 
-    // Validate username
-    if (username.length < 3) {
-      setError('Username must be at least 3 characters');
-      return;
+    // Validate name
+    if (name.length < 3) {
+      setError('name must be at least 3 characters')
+      return
     }
 
-    // Form submission success
-    setSuccess(true);
-  };
+    try {
+      const response = await fetch('/api/leaderboard', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email }),
+      })
+
+      const data = await response.json()
+      console.log('data', data)
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Something went wrong')
+      }
+
+      setSuccess(true)
+    } catch (error) {
+      setError(error.message)
+    }
+  }
 
   return (
     <main className="flex flex-col justify-center items-center min-h-screen bg-black overflow-hidden">
       <div className="relative w-full h-screen bg-black">
         {/* Pacman Character */}
-        <div 
+        <div
           className="absolute w-[30px] h-[30px] bg-yellow-400 rounded-full bottom-5 z-10"
-          style={{ 
+          style={{
             left: `${pacmanPosition}%`,
             clipPath: 'polygon(0 0, 100% 50%, 0 100%)',
-            animation: 'eat 0.3s infinite alternate'
+            animation: 'eat 0.3s infinite alternate',
           }}
         ></div>
-        
+
         {/* Ghost Characters */}
-        {ghosts.map(ghost => (
-          <div 
+        {ghosts.map((ghost) => (
+          <div
             key={ghost.id}
             className="absolute w-[25px] h-[25px] rounded-t-full z-[4]"
-            style={{ 
-              top: `${ghost.top}%`, 
+            style={{
+              top: `${ghost.top}%`,
               left: `${ghost.left}%`,
               backgroundColor: ghost.color,
-              animation: 'float 4s infinite ease-in-out'
+              animation: 'float 4s infinite ease-in-out',
             }}
           >
-            <div 
+            <div
               className="absolute -bottom-[5px] left-0 w-full h-[5px]"
-              style={{ 
+              style={{
                 backgroundColor: ghost.color,
-                clipPath: 'polygon(0% 0%, 25% 100%, 50% 0%, 75% 100%, 100% 0%)'
+                clipPath: 'polygon(0% 0%, 25% 100%, 50% 0%, 75% 100%, 100% 0%)',
               }}
             ></div>
           </div>
         ))}
-        
-        {/* Dots */}
-        {Array(10).fill().map((_, i) => (
-          <div 
-            key={i} 
-            className="absolute w-[10px] h-[10px] bg-yellow-400 rounded-full bottom-[30px] animate-pulse"
-            style={{ left: `${i * 10}%` }}
-          ></div>
-        ))}
 
-        <div 
+        {/* Dots */}
+        {Array(10)
+          .fill()
+          .map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-[10px] h-[10px] bg-yellow-400 rounded-full bottom-[30px] animate-pulse"
+              style={{ left: `${i * 10}%` }}
+            ></div>
+          ))}
+
+        <div
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] p-8 rounded-3xl z-10 overflow-hidden border-4 border-[#0000AA]"
           style={{
             background: 'linear-gradient(180deg, #000033 0%, #000066 100%)',
-            boxShadow: '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)'
+            boxShadow:
+              '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
           }}
         >
           {/* Pac-Man dots decoration - top */}
           <div className="absolute top-0 left-0 w-full h-6 flex justify-around items-center">
-            {Array(10).fill().map((_, i) => (
-              <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
-            ))}
+            {Array(10)
+              .fill()
+              .map((_, i) => (
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-yellow-300"
+                ></div>
+              ))}
           </div>
-          
-          <h1 
+
+          <h1
             className="text-yellow-300 text-center font-['Press_Start_2P'] font-bold mb-8 text-4xl"
             style={{ textShadow: '0 0 10px rgba(255, 255, 0, 0.7)' }}
           >
-MAZE ADVENTURE REGISTER
-</h1>
-          
+            MAZE ADVENTURE REGISTER
+          </h1>
+
           {success ? (
             <div className="text-center text-yellow-300 font-['Press_Start_2P'] p-5 bg-black bg-opacity-60 rounded-lg border-2 border-blue-500">
               <div className="w-24 h-24 mx-auto mb-5 relative">
-                <div className="w-full h-full bg-yellow-400 rounded-full flex items-center justify-center animate-pulse"
+                <div
+                  className="w-full h-full bg-yellow-400 rounded-full flex items-center justify-center animate-pulse"
                   style={{ boxShadow: '0 0 20px rgba(255, 255, 0, 0.7)' }}
                 ></div>
-                
+
                 {/* Scared ghost */}
                 <div className="absolute -top-2 -right-2 w-10 h-10 animate-bounce">
                   <div className="w-full h-8 bg-blue-400 rounded-t-full"></div>
@@ -136,56 +163,71 @@ MAZE ADVENTURE REGISTER
                   <div className="absolute top-4 right-2 w-1 h-1 bg-white rounded-full"></div>
                 </div>
               </div>
-              <h2 className="mb-5 text-lg" style={{ textShadow: '0 0 10px rgba(255, 255, 0, 0.7)' }}>
+              <h2
+                className="mb-5 text-lg"
+                style={{ textShadow: '0 0 10px rgba(255, 255, 0, 0.7)' }}
+              >
                 Registration Successful!
               </h2>
-              <p className="mb-6">Welcome to the game, {username}!</p>
-              
+              <p className="mb-6">Welcome to the game, {name}!</p>
+
               <div className="flex justify-center items-center w-full">
-                <button 
-                  onClick={() => setSuccess(false)} 
+                <button
+                  onClick={() => setSuccess(false)}
                   className="px-10 py-4 rounded-full text-black font-bold text-xl flex items-center justify-center gap-3 transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-70"
                   style={{
                     background: 'linear-gradient(to right, #FFFF00, #FFCC00)',
                     boxShadow: '0 0 15px rgba(255, 255, 0, 0.7)',
-                    border: '3px solid #FFAA00'
+                    border: '3px solid #FFAA00',
                   }}
                 >
                   <div className="w-6 h-6 bg-black rounded-full relative flex-shrink-0">
-                    <div 
+                    <div
                       className="absolute right-0 top-1/4"
                       style={{
                         width: 0,
                         height: 0,
                         borderTop: '6px solid transparent',
                         borderBottom: '6px solid transparent',
-                        borderRight: '12px solid black'
+                        borderRight: '12px solid black',
                       }}
                     ></div>
                   </div>
-                <Link href="/" className="text-black font-['Press_Start_2P']">  <span>PLAY NOW</span> </Link>
+                  <Link href="/" className="text-black font-['Press_Start_2P']">
+                    {' '}
+                    <span>PLAY NOW</span>{' '}
+                  </Link>
                 </button>
               </div>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5 bg-black bg-opacity-60 rounded-lg p-4 border-2 border-blue-500">
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col gap-5 bg-black bg-opacity-60 rounded-lg p-4 border-2 border-blue-500"
+            >
               <div className="flex flex-col gap-2">
-                <label htmlFor="username" className="text-blue-300 font-['Press_Start_2P'] text-sm">
-                  Username
+                <label
+                  htmlFor="name"
+                  className="text-blue-300 font-['Press_Start_2P'] text-sm"
+                >
+                  name
                 </label>
                 <input
                   type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   required
                   className="p-3 bg-[#000033] border-2 border-[#0055AA] rounded-lg text-white font-['Press_Start_2P'] text-sm transition-all duration-300 focus:outline-none focus:shadow-[0_0_10px_rgba(0,100,255,0.7)] focus:border-[#0088FF]"
-                  placeholder="Enter your username"
+                  placeholder="Enter your name"
                 />
               </div>
-              
+
               <div className="flex flex-col gap-2">
-                <label htmlFor="email" className="text-blue-300 font-['Press_Start_2P'] text-sm">
+                <label
+                  htmlFor="email"
+                  className="text-blue-300 font-['Press_Start_2P'] text-sm"
+                >
                   Email (@kiit.ac.in)
                 </label>
                 <input
@@ -198,26 +240,26 @@ MAZE ADVENTURE REGISTER
                   placeholder="your.email@kiit.ac.in"
                 />
               </div>
-              
+
               {error && (
                 <div className="text-red-500 bg-red-500 bg-opacity-20 p-2.5 rounded text-center font-['Press_Start_2P'] text-xs">
                   {error}
                 </div>
               )}
-              
-              <button 
-                type="submit" 
+
+              <button
+                type="submit"
                 className="bg-gradient-to-r from-yellow-300 to-yellow-400 text-black font-bold py-4 px-6 rounded-full border-3 border-yellow-600 flex items-center justify-center gap-2.5 mt-2.5 shadow-[0_0_15px_rgba(255,255,0,0.7)] animate-pulse transition-transform duration-300 hover:scale-105"
               >
                 <div className="w-6 h-6 bg-black rounded-full relative">
-                  <div 
+                  <div
                     className="absolute right-0 top-1/4"
                     style={{
                       width: 0,
                       height: 0,
                       borderTop: '6px solid transparent',
                       borderBottom: '6px solid transparent',
-                      borderRight: '12px solid black'
+                      borderRight: '12px solid black',
                     }}
                   ></div>
                 </div>
@@ -225,15 +267,20 @@ MAZE ADVENTURE REGISTER
               </button>
             </form>
           )}
-          
+
           {/* Pac-Man dots decoration - bottom */}
           <div className="absolute bottom-0 left-0 w-full h-6 flex justify-around items-center">
-            {Array(10).fill().map((_, i) => (
-              <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
-            ))}
+            {Array(10)
+              .fill()
+              .map((_, i) => (
+                <div
+                  key={i}
+                  className="w-2 h-2 rounded-full bg-yellow-300"
+                ></div>
+              ))}
           </div>
         </div>
       </div>
     </main>
-  );
+  )
 }
