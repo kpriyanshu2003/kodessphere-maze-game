@@ -15,7 +15,6 @@ export default function Home() {
       } catch (err) {
         console.log(err)
       }
-      // setLeaderboard(data)
     }
     fetchLeaderboard()
     const interval = setInterval(fetchLeaderboard, 500000)
@@ -121,10 +120,10 @@ export default function Home() {
                     <span className="text-yellow-400">#{index + 1}</span>
                   </div>
                   <div className="w-1/6 text-center text-sm sm:text-base">
-                    {player.userid}
+                    {player.user.id}
                   </div>
                   <div className="w-1/6 text-center text-sm sm:text-base">
-                    {player.name}
+                    {player.user.name}
                   </div>
                   <div className="w-1/6 text-center text-sm sm:text-base">
                     {player.level}
@@ -133,10 +132,12 @@ export default function Home() {
                     {player.moves}
                   </div>
                   <div className="w-1/6 text-center text-sm sm:text-base">
-                    {player.time}
+                    {player.totalTimeTaken === ''
+                      ? '00:00:00'
+                      : player.totalTimeTaken}
                   </div>
                   <div className="w-1/6 text-center text-sm sm:text-base">
-                    {player.points}
+                    {player.totalPointsScored}
                   </div>
                 </div>
               )
