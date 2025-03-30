@@ -1,17 +1,17 @@
-import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react";
 
 const RulesModal = ({ showRules, setShowRules }) => {
-  if (!showRules) return null
+  if (!showRules) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
       <div
         className="rounded-xl shadow-2xl max-w-md w-full p-6 max-h-[80vh] overflow-y-auto relative text-white"
         style={{
-          background: 'linear-gradient(180deg, #000033 0%, #000066 100%)',
+          background: "linear-gradient(180deg, #000033 0%, #000066 100%)",
           boxShadow:
-            '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
-          border: '4px solid #0000AA',
+            "0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)",
+          border: "4px solid #0000AA",
         }}
       >
         {/* Close button - new addition */}
@@ -19,9 +19,9 @@ const RulesModal = ({ showRules, setShowRules }) => {
           onClick={() => setShowRules(false)}
           className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full z-10 transition-all duration-200 transform hover:scale-110"
           style={{
-            background: 'linear-gradient(to bottom, #FFFF00, #FFCC00)',
-            border: '2px solid #FFAA00',
-            boxShadow: '0 0 10px rgba(255, 255, 0, 0.5)',
+            background: "linear-gradient(to bottom, #FFFF00, #FFCC00)",
+            border: "2px solid #FFAA00",
+            boxShadow: "0 0 10px rgba(255, 255, 0, 0.5)",
           }}
         >
           <div className="relative w-4 h-4">
@@ -40,7 +40,7 @@ const RulesModal = ({ showRules, setShowRules }) => {
         <h2
           className="text-2xl font-bold mb-6 text-yellow-300 text-center"
           style={{
-            textShadow: '0 0 10px rgba(255, 255, 0, 0.7)',
+            textShadow: "0 0 10px rgba(255, 255, 0, 0.7)",
             fontFamily: '"Press Start 2P", cursive, system-ui',
           }}
         >
@@ -183,9 +183,9 @@ const RulesModal = ({ showRules, setShowRules }) => {
           onClick={() => setShowRules(false)}
           className="mt-6 w-full py-3 rounded-full text-black font-bold text-lg transform transition-all duration-300 hover:scale-105 flex items-center justify-center"
           style={{
-            background: 'linear-gradient(to right, #FFFF00, #FFCC00)',
-            boxShadow: '0 0 15px rgba(255, 255, 0, 0.7)',
-            border: '3px solid #FFAA00',
+            background: "linear-gradient(to right, #FFFF00, #FFCC00)",
+            boxShadow: "0 0 15px rgba(255, 255, 0, 0.7)",
+            border: "3px solid #FFAA00",
           }}
         >
           <div className="w-5 h-5 bg-black rounded-full relative mr-2">
@@ -202,7 +202,7 @@ const RulesModal = ({ showRules, setShowRules }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RulesModal
+export default RulesModal;

@@ -1,42 +1,42 @@
-import { Home, Key, Flag } from 'lucide-react'
+import { Home, Key, Flag } from "lucide-react";
 
 export default function MazeRenderer({ maze, playerPosition, hasKey }) {
-  if (!maze) return null
+  if (!maze) return null;
 
   return (
     <div
       className="grid gap-0 relative "
       style={{
         gridTemplateColumns: `repeat(${maze[0].length}, 1fr)`,
-        width: '100%',
+        width: "100%",
         maxWidth: `${maze[0].length * 40}px`,
-        background: '#000',
-        padding: '12px',
-        borderRadius: '12px',
-        boxShadow: '0 0 20px rgba(0, 162, 255, 0.5)',
-        border: '4px solid #0066cc',
+        background: "#000",
+        padding: "12px",
+        borderRadius: "12px",
+        boxShadow: "0 0 20px rgba(0, 162, 255, 0.5)",
+        border: "4px solid #0066cc",
       }}
     >
       {maze.map((row, rowIndex) =>
         row.map((cell, colIndex) => {
           const isPlayer =
-            playerPosition.x === rowIndex && playerPosition.y === colIndex
+            playerPosition.x === rowIndex && playerPosition.y === colIndex;
 
           return (
             <div
               key={`${rowIndex}-${colIndex}`}
               className={`
                 relative aspect-square transition-all duration-200
-                ${cell.isBlocked ? 'bg-blue-700' : 'bg-black'}
-                ${cell.isStart ? 'bg-black' : ''}
-                ${cell.isKey ? 'bg-black' : ''}
-                ${cell.isGoal ? 'bg-black' : ''}
+                ${cell.isBlocked ? "bg-blue-700" : "bg-black"}
+                ${cell.isStart ? "bg-black" : ""}
+                ${cell.isKey ? "bg-black" : ""}
+                ${cell.isGoal ? "bg-black" : ""}
               `}
               style={{
-                boxSizing: 'border-box',
-                boxShadow: cell.isBlocked ? 'inset 0 0 0 2px #0066cc' : 'none',
-                outline: cell.isBlocked ? '1px solid #0088ff' : 'none',
-                position: 'relative',
+                boxSizing: "border-box",
+                boxShadow: cell.isBlocked ? "inset 0 0 0 2px #0066cc" : "none",
+                outline: cell.isBlocked ? "1px solid #0088ff" : "none",
+                position: "relative",
                 zIndex: cell.isBlocked ? 1 : 0,
               }}
             >
@@ -78,9 +78,9 @@ export default function MazeRenderer({ maze, playerPosition, hasKey }) {
                 </div>
               )}
             </div>
-          )
-        }),
+          );
+        })
       )}
     </div>
-  )
+  );
 }

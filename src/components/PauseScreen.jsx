@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { Clock, RotateCcw } from 'lucide-react'
+import { Clock, RotateCcw } from "lucide-react";
 
 export default function PauseScreen({
   score,
@@ -16,10 +16,10 @@ export default function PauseScreen({
     <div
       className="flex flex-col items-center justify-center space-y-6 p-8 rounded-xl shadow-2xl max-w-md w-full mx-auto text-white relative overflow-hidden"
       style={{
-        background: 'linear-gradient(180deg, #000033 0%, #000066 100%)',
+        background: "linear-gradient(180deg, #000033 0%, #000066 100%)",
         boxShadow:
-          '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
-        border: '4px solid #0000AA',
+          "0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)",
+        border: "4px solid #0000AA",
       }}
     >
       {/* Pac-Man dots decoration - top */}
@@ -32,7 +32,7 @@ export default function PauseScreen({
       <h2
         className="text-4xl font-bold text-yellow-300 mb-2"
         style={{
-          textShadow: '0 0 10px rgba(255, 255, 0, 0.7)',
+          textShadow: "0 0 10px rgba(255, 255, 0, 0.7)",
           fontFamily: '"Press Start 2P", cursive, system-ui',
         }}
       >
@@ -48,7 +48,7 @@ export default function PauseScreen({
         <div className="flex justify-between items-center">
           <span className="text-blue-300">LEVEL:</span>
           <span className="text-white">
-            {currentLevel} -{' '}
+            {currentLevel} -{" "}
             <span className="text-yellow-300">{levels[currentLevel].name}</span>
           </span>
         </div>
@@ -74,12 +74,12 @@ export default function PauseScreen({
 
       <div className="flex space-x-4 mt-4">
         <button
-          onClick={() => setGameState('playing')}
+          onClick={() => setGameState("playing")}
           className="px-6 py-3 rounded-lg flex items-center space-x-2 transform hover:scale-105 transition-all"
           style={{
-            background: 'linear-gradient(to bottom, #FFFF00, #FFCC00)',
-            border: '3px solid #FFAA00',
-            boxShadow: '0 0 10px rgba(255, 255, 0, 0.5)',
+            background: "linear-gradient(to bottom, #FFFF00, #FFCC00)",
+            border: "3px solid #FFAA00",
+            boxShadow: "0 0 10px rgba(255, 255, 0, 0.5)",
           }}
         >
           <div className="w-5 h-5 bg-black rounded-full relative">
@@ -92,7 +92,7 @@ export default function PauseScreen({
           onClick={restartGame}
           className="px-6 py-3 rounded-lg flex items-center space-x-2 bg-blue-700 hover:bg-blue-600 transition-all border-2 border-blue-500"
           style={{
-            boxShadow: '0 0 10px rgba(0, 0, 255, 0.5)',
+            boxShadow: "0 0 10px rgba(0, 0, 255, 0.5)",
           }}
         >
           <RotateCcw size={20} className="text-yellow-300" />
@@ -107,5 +107,5 @@ export default function PauseScreen({
         ))}
       </div>
     </div>
-  )
+  );
 }

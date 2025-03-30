@@ -1,80 +1,80 @@
-'use client'
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
+"use client";
+import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function Register({ setUser }) {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
-  const [pacmanPosition, setPacmanPosition] = useState(0)
-  const [ghosts, setGhosts] = useState([])
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [pacmanPosition, setPacmanPosition] = useState(0);
+  const [ghosts, setGhosts] = useState([]);
 
   // Generate random ghost positions
   useEffect(() => {
-    const newGhosts = []
+    const newGhosts = [];
     for (let i = 0; i < 4; i++) {
       newGhosts.push({
         id: i,
         top: Math.floor(Math.random() * 80) + 10,
         left: Math.floor(Math.random() * 80) + 10,
-        color: ['red', 'pink', 'cyan', 'orange'][i],
-      })
+        color: ["red", "pink", "cyan", "orange"][i],
+      });
     }
-    setGhosts(newGhosts)
-  }, [])
+    setGhosts(newGhosts);
+  }, []);
 
   // Animate Pacman movement
   useEffect(() => {
     const interval = setInterval(() => {
-      setPacmanPosition((prev) => (prev + 1) % 100)
-    }, 100)
-    return () => clearInterval(interval)
-  }, [])
+      setPacmanPosition((prev) => (prev + 1) % 100);
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError("");
 
     // Validate email domain
-    if (!email.endsWith('@kiit.ac.in')) {
-      setError('Email must be from @kiit.ac.in domain')
-      return
+    if (!email.endsWith("@kiit.ac.in")) {
+      setError("Email must be from @kiit.ac.in domain");
+      return;
     }
 
     // Validate name
     if (name.length < 3) {
-      setError('name must be at least 3 characters')
-      return
+      setError("name must be at least 3 characters");
+      return;
     }
 
     try {
-      console.log('Sending')
-      const response = await fetch('/api/leaderboard', {
-        method: 'POST',
+      console.log("Sending");
+      const response = await fetch("/api/leaderboard", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ name, email }),
-      })
+      });
 
       if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong')
+        throw new Error(data.message || "Something went wrong");
       }
 
-      const data = await response.json()
-      console.log('data', data)
+      const data = await response.json();
+      console.log("data", data);
 
       if (data && data.user) {
-        setUser(data.user)
+        setUser(data.user);
       }
 
-      setSuccess(true)
+      setSuccess(true);
     } catch (error) {
-      console.log('error', error)
-      setError(error.message)
+      console.log("error", error);
+      setError(error.message);
     }
-  }
+  };
 
   return (
     <main className="flex flex-col justify-center items-center min-h-screen bg-black overflow-hidden">
@@ -84,8 +84,8 @@ export default function Register({ setUser }) {
           className="absolute w-[30px] h-[30px] bg-yellow-400 rounded-full bottom-5 z-10"
           style={{
             left: `${pacmanPosition}%`,
-            clipPath: 'polygon(0 0, 100% 50%, 0 100%)',
-            animation: 'eat 0.3s infinite alternate',
+            clipPath: "polygon(0 0, 100% 50%, 0 100%)",
+            animation: "eat 0.3s infinite alternate",
           }}
         ></div>
 
@@ -98,14 +98,14 @@ export default function Register({ setUser }) {
               top: `${ghost.top}%`,
               left: `${ghost.left}%`,
               backgroundColor: ghost.color,
-              animation: 'float 4s infinite ease-in-out',
+              animation: "float 4s infinite ease-in-out",
             }}
           >
             <div
               className="absolute -bottom-[5px] left-0 w-full h-[5px]"
               style={{
                 backgroundColor: ghost.color,
-                clipPath: 'polygon(0% 0%, 25% 100%, 50% 0%, 75% 100%, 100% 0%)',
+                clipPath: "polygon(0% 0%, 25% 100%, 50% 0%, 75% 100%, 100% 0%)",
               }}
             ></div>
           </div>
@@ -125,9 +125,9 @@ export default function Register({ setUser }) {
         <div
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] p-8 rounded-3xl z-10 overflow-hidden border-4 border-[#0000AA]"
           style={{
-            background: 'linear-gradient(180deg, #000033 0%, #000066 100%)',
+            background: "linear-gradient(180deg, #000033 0%, #000066 100%)",
             boxShadow:
-              '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
+              "0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)",
           }}
         >
           {/* Pac-Man dots decoration - top */}
@@ -144,7 +144,7 @@ export default function Register({ setUser }) {
 
           <h1
             className="text-yellow-300 text-center font-['Press_Start_2P'] font-bold mb-8 text-4xl"
-            style={{ textShadow: '0 0 10px rgba(255, 255, 0, 0.7)' }}
+            style={{ textShadow: "0 0 10px rgba(255, 255, 0, 0.7)" }}
           >
             MAZE ADVENTURE REGISTER
           </h1>
@@ -154,7 +154,7 @@ export default function Register({ setUser }) {
               <div className="w-24 h-24 mx-auto mb-5 relative">
                 <div
                   className="w-full h-full bg-yellow-400 rounded-full flex items-center justify-center animate-pulse"
-                  style={{ boxShadow: '0 0 20px rgba(255, 255, 0, 0.7)' }}
+                  style={{ boxShadow: "0 0 20px rgba(255, 255, 0, 0.7)" }}
                 ></div>
 
                 {/* Scared ghost */}
@@ -171,7 +171,7 @@ export default function Register({ setUser }) {
               </div>
               <h2
                 className="mb-5 text-lg"
-                style={{ textShadow: '0 0 10px rgba(255, 255, 0, 0.7)' }}
+                style={{ textShadow: "0 0 10px rgba(255, 255, 0, 0.7)" }}
               >
                 Registration Successful!
               </h2>
@@ -182,9 +182,9 @@ export default function Register({ setUser }) {
                   onClick={() => setSuccess(false)}
                   className="px-10 py-4 rounded-full text-black font-bold text-xl flex items-center justify-center gap-3 transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-70"
                   style={{
-                    background: 'linear-gradient(to right, #FFFF00, #FFCC00)',
-                    boxShadow: '0 0 15px rgba(255, 255, 0, 0.7)',
-                    border: '3px solid #FFAA00',
+                    background: "linear-gradient(to right, #FFFF00, #FFCC00)",
+                    boxShadow: "0 0 15px rgba(255, 255, 0, 0.7)",
+                    border: "3px solid #FFAA00",
                   }}
                 >
                   <div className="w-6 h-6 bg-black rounded-full relative flex-shrink-0">
@@ -193,15 +193,15 @@ export default function Register({ setUser }) {
                       style={{
                         width: 0,
                         height: 0,
-                        borderTop: '6px solid transparent',
-                        borderBottom: '6px solid transparent',
-                        borderRight: '12px solid black',
+                        borderTop: "6px solid transparent",
+                        borderBottom: "6px solid transparent",
+                        borderRight: "12px solid black",
                       }}
                     ></div>
                   </div>
                   <Link href="/" className="text-black font-['Press_Start_2P']">
-                    {' '}
-                    <span>PLAY NOW</span>{' '}
+                    {" "}
+                    <span>PLAY NOW</span>{" "}
                   </Link>
                 </button>
               </div>
@@ -263,9 +263,9 @@ export default function Register({ setUser }) {
                     style={{
                       width: 0,
                       height: 0,
-                      borderTop: '6px solid transparent',
-                      borderBottom: '6px solid transparent',
-                      borderRight: '12px solid black',
+                      borderTop: "6px solid transparent",
+                      borderBottom: "6px solid transparent",
+                      borderRight: "12px solid black",
                     }}
                   ></div>
                 </div>
@@ -288,5 +288,5 @@ export default function Register({ setUser }) {
         </div>
       </div>
     </main>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-import { Clock, Info, Key } from 'lucide-react'
-import MazeRenderer from './MazeRenderer'
-import ControlPad from './ControlPad'
+import { Clock, Info, Key } from "lucide-react";
+import MazeRenderer from "./MazeRenderer";
+import ControlPad from "./ControlPad";
 
 export default function GameBoard({
   currentLevel,
@@ -26,7 +26,7 @@ export default function GameBoard({
         <div className="flex items-center space-x-3">
           <div
             className={`flex items-center space-x-2 px-3 py-1 rounded-full ${
-              timer < 10 ? 'bg-red-500 animate-pulse' : 'bg-blue-900'
+              timer < 10 ? "bg-red-500 animate-pulse" : "bg-blue-900"
             } text-white border border-blue-400`}
           >
             <Clock size={16} className="text-blue-300" />
@@ -46,7 +46,7 @@ export default function GameBoard({
 
       <div
         className="bg-black p-4 rounded-xl shadow-xl w-full"
-        style={{ boxShadow: '0 0 20px rgba(37, 99, 235, 0.4)' }}
+        style={{ boxShadow: "0 0 20px rgba(37, 99, 235, 0.4)" }}
       >
         <div className="flex justify-center ">
           {hasKey && (
@@ -68,5 +68,5 @@ export default function GameBoard({
 
       <ControlPad movePlayer={movePlayer} />
     </div>
-  )
+  );
 }

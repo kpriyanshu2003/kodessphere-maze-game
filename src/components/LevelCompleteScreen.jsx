@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { ChevronRight } from 'lucide-react'
-import { useEffect } from 'react'
+import { ChevronRight } from "lucide-react";
+import { useEffect } from "react";
 
 export default function LevelCompleteScreen({
   user,
@@ -16,10 +16,10 @@ export default function LevelCompleteScreen({
 }) {
   const updateLeaderboard = async () => {
     try {
-      const response = await fetch('/api/leaderboard', {
-        method: 'POST',
+      const response = await fetch("/api/leaderboard", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: user.name,
@@ -27,27 +27,27 @@ export default function LevelCompleteScreen({
           level: currentLevel,
           score,
           moves,
-          totalTimeTaken: `${timer ?? ''}`,
+          totalTimeTaken: `${timer ?? ""}`,
           totalPointsScored: score,
         }),
-      })
-      const data = await response.json()
-      console.log('data', data)
+      });
+      const data = await response.json();
+      console.log("data", data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
   useEffect(() => {
-    updateLeaderboard()
-  }, [user, currentLevel, score, moves, timer])
+    updateLeaderboard();
+  }, [user, currentLevel, score, moves, timer]);
   return (
     <div
       className="flex flex-col items-center justify-center space-y-6 p-8 rounded-xl shadow-2xl max-w-md w-full mx-auto text-white relative overflow-hidden"
       style={{
-        background: 'linear-gradient(180deg, #000033 0%, #000066 100%)',
+        background: "linear-gradient(180deg, #000033 0%, #000066 100%)",
         boxShadow:
-          '0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)',
-        border: '4px solid #0000AA',
+          "0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)",
+        border: "4px solid #0000AA",
       }}
     >
       {/* Pac-Man dots decoration - top */}
@@ -60,7 +60,7 @@ export default function LevelCompleteScreen({
       <h2
         className="text-3xl font-bold text-center text-yellow-300"
         style={{
-          textShadow: '0 0 10px rgba(255, 255, 0, 0.7)',
+          textShadow: "0 0 10px rgba(255, 255, 0, 0.7)",
           fontFamily: '"Press Start 2P", cursive, system-ui',
         }}
       >
@@ -73,7 +73,7 @@ export default function LevelCompleteScreen({
       <div className="relative mb-4">
         <div
           className="w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center animate-pulse"
-          style={{ boxShadow: '0 0 20px rgba(255, 255, 0, 0.7)' }}
+          style={{ boxShadow: "0 0 20px rgba(255, 255, 0, 0.7)" }}
         >
           <div
             className="absolute w-0 h-0 right-1 
@@ -86,13 +86,13 @@ export default function LevelCompleteScreen({
         <div className="absolute -top-4 -right-4 w-8 h-8 bg-pink-400 rounded-t-full animate-bounce"></div>
         <div
           className="absolute -bottom-4 -left-4 w-8 h-8 bg-cyan-400 rounded-t-full animate-bounce"
-          style={{ animationDelay: '0.3s' }}
+          style={{ animationDelay: "0.3s" }}
         ></div>
       </div>
 
       <div
         className="w-full space-y-2 bg-black bg-opacity-60 rounded-lg p-4 border-2 border-blue-500"
-        style={{ fontFamily: 'monospace' }}
+        style={{ fontFamily: "monospace" }}
       >
         <div className="text-center mb-3 text-xl font-bold text-yellow-300">
           SCORE BREAKDOWN
@@ -151,7 +151,7 @@ export default function LevelCompleteScreen({
           <span className="text-yellow-300">TOTAL SCORE:</span>
           <span
             className="text-yellow-300 text-2xl"
-            style={{ textShadow: '0 0 5px rgba(255, 255, 0, 0.7)' }}
+            style={{ textShadow: "0 0 5px rgba(255, 255, 0, 0.7)" }}
           >
             {score +
               500 +
@@ -165,9 +165,9 @@ export default function LevelCompleteScreen({
         onClick={nextLevel}
         className="px-10 py-4 rounded-full text-black font-bold text-xl transform transition-all duration-300 hover:scale-105 flex items-center space-x-3 animate-pulse mt-4"
         style={{
-          background: 'linear-gradient(to right, #FFFF00, #FFCC00)',
-          boxShadow: '0 0 15px rgba(255, 255, 0, 0.7)',
-          border: '3px solid #FFAA00',
+          background: "linear-gradient(to right, #FFFF00, #FFCC00)",
+          boxShadow: "0 0 15px rgba(255, 255, 0, 0.7)",
+          border: "3px solid #FFAA00",
         }}
       >
         <span>NEXT LEVEL</span>
@@ -181,5 +181,5 @@ export default function LevelCompleteScreen({
         ))}
       </div>
     </div>
-  )
+  );
 }

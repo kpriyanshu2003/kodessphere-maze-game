@@ -1,4 +1,4 @@
-import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function ControlPad({ movePlayer }) {
   return (
@@ -33,5 +33,5 @@ export default function ControlPad({ movePlayer }) {
         <ArrowRight size={24} />
       </button>
     </div>
-  )
+  );
 }

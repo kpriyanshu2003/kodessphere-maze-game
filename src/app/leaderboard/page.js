@@ -1,32 +1,32 @@
-'use client'
-import { useState, useEffect } from 'react'
+"use client";
+import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [leaderboard, setLeaderboard] = useState([])
+  const [leaderboard, setLeaderboard] = useState([]);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const response = await fetch('/api/leaderboard')
-        const data = await response.json()
-        console.log('Leaderboard data', data)
-        setLeaderboard(data.leaderboard)
+        const response = await fetch("/api/leaderboard");
+        const data = await response.json();
+        console.log("Leaderboard data", data);
+        setLeaderboard(data.leaderboard);
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
-    }
-    fetchLeaderboard()
-    const interval = setInterval(fetchLeaderboard, 5000)
-    return () => clearInterval(interval)
-  }, [])
+    };
+    fetchLeaderboard();
+    const interval = setInterval(fetchLeaderboard, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div
       className="min-h-screen bg-cover bg-center bg-fixed flex flex-col items-center p-4 sm:p-6 relative"
       style={{
         backgroundImage: "url('/background_image.jpg')",
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
-        backgroundBlendMode: 'darken',
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        backgroundBlendMode: "darken",
       }}
     >
       {/* Top Right Logo */}
@@ -52,7 +52,7 @@ export default function Home() {
             className="h-20 sm:h-28 w-auto"
           />
           <p className="text-lg sm:text-xl font-bold">
-            <span className="text-yellow-400">#2</span>{' '}
+            <span className="text-yellow-400">#2</span>{" "}
             <span className="text-white">{leaderboard[1]?.name}</span>
           </p>
         </div>
@@ -63,7 +63,7 @@ export default function Home() {
             className="h-24 sm:h-36 w-auto"
           />
           <p className="text-lg sm:text-xl font-bold">
-            <span className="text-yellow-400">#1</span>{' '}
+            <span className="text-yellow-400">#1</span>{" "}
             <span className="text-white">{leaderboard[0]?.name}</span>
           </p>
         </div>
@@ -74,7 +74,7 @@ export default function Home() {
             className="h-20 sm:h-28 w-auto"
           />
           <p className="text-lg sm:text-xl font-bold">
-            <span className="text-yellow-400">#3</span>{' '}
+            <span className="text-yellow-400">#3</span>{" "}
             <span className="text-white">{leaderboard[2]?.name}</span>
           </p>
         </div>
@@ -87,13 +87,13 @@ export default function Home() {
           {/* Column Headers */}
           <div className="min-w-[700px] bg-black/50 backdrop-blur-md p-4 flex text-gray-200 font-semibold text-lg">
             {[
-              'Rank',
-              'UserId',
-              'Name',
-              'Level',
-              'Moves',
-              'Time Taken',
-              'Points Scored',
+              "Rank",
+              "UserId",
+              "Name",
+              "Level",
+              "Moves",
+              "Time Taken",
+              "Points Scored",
             ].map((header, index) => (
               <div key={index} className="w-1/6 text-center">
                 {header}
@@ -105,11 +105,11 @@ export default function Home() {
           <div className="w-full">
             {leaderboard.map((player, index) => {
               const rankStyles = [
-                'bg-yellow-500/80', // Rank 1 - Gold
-                'bg-gray-400/80', // Rank 2 - Silver
-                'bg-red-900/80', // Rank 3 - Bronze
-              ]
-              const bgColor = rankStyles[index] || 'bg-black/30' // Default for ranks > 3
+                "bg-yellow-500/80", // Rank 1 - Gold
+                "bg-gray-400/80", // Rank 2 - Silver
+                "bg-red-900/80", // Rank 3 - Bronze
+              ];
+              const bgColor = rankStyles[index] || "bg-black/30"; // Default for ranks > 3
 
               return (
                 <div
@@ -124,7 +124,7 @@ export default function Home() {
                     player.user.name,
                     player.level,
                     player.moves,
-                    player.totalTimeTaken || '00:00:00',
+                    player.totalTimeTaken || "00:00:00",
                     player.totalPointsScored,
                   ].map((value, idx) => (
                     <div
@@ -135,11 +135,11 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-              )
+              );
             })}
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
