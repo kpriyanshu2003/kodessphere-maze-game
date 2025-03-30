@@ -100,10 +100,13 @@ function Page({ setUser }) {
         ))} */}
 
       {/* Form */}
-      <div className="border-[3px] rounded-lg px-16 py-10 border-[#2121DE] h-6/12 w-5/12 flex flex-col justify-between">
+      <div className="border-2 rounded-lg px-16 py-10 border-[#2121DE] h-6/12 md:w-5/12 flex flex-col justify-between">
         <div className="text-center font-pacman text-5xl">Maze Adventure</div>
-        <div className="px-6 py-4 mt-4 grid place-items-center">
-          <form className="flex flex-col gap-4 w-5/6" onSubmit={handleSubmit}>
+        <div className="md:px-6 py-4 md:mt-4 grid place-items-center">
+          <form
+            className="flex flex-col gap-4 md:w-5/6 w-full"
+            onSubmit={handleSubmit}
+          >
             <input
               type="text"
               placeholder="name"

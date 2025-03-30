@@ -11,9 +11,9 @@ export default function StartScreen({
   setIsSelected,
 }) {
   return (
-    <div className="w-6/12 h-7/12">
+    <div className="md:w-6/12 h-7/12">
       <div
-        className="border-2 border-[#2121DE] grid place-items-center w-full h-full p-6 rounded-xl text-white"
+        className="border-2 border-[#2121DE] grid place-items-center w-full h-full md:p-6 rounded-xl text-white"
         // style={
         // {
         // background: "linear-gradient(180deg, #000033 0%, #000066 100%)",
@@ -30,7 +30,7 @@ export default function StartScreen({
           ))}
         </div> */}
         <h1
-          className="text-5xl font-bold text-center text-yellow-300 font-pacman"
+          className="text-3xl md:text-5xl font-bold text-center text-yellow-300 font-pacman"
           // style={{
           //   textShadow:
           //     "0 0 10px rgba(255, 255, 0, 0.7), 0 0 20px rgba(255, 255, 0, 0.5)",
@@ -69,7 +69,7 @@ export default function StartScreen({
           ))}
         </div>
         <button
-          className="border-2 rounded-lg font-mono px-6 py-4 flex gap-2 text-[#FFFF00] cursor-pointer w-8/12 justify-center"
+          className="border-2 rounded-lg font-mono md:px-6 py-4 flex gap-2 text-[#FFFF00] cursor-pointer mw-8/12 justify-center"
           onClick={startGame}
           style={{ boxShadow: "0 0 15px rgba(255, 255, 0, 0.5)" }}
         >
