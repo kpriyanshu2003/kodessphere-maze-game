@@ -38,9 +38,8 @@ export default function Home() {
         />
       </div>
 
-      {/* Title */}
       <h1 className="text-white text-3xl sm:text-5xl font-bold mt-6 sm:mt-10 text-center tracking-wide">
-        🏆 Kodesphere v_2.0 🏅
+        Kodesphere 2.0
       </h1>
 
       {/* Medal Display */}
@@ -85,7 +84,7 @@ export default function Home() {
       <div className="w-full max-w-5xl rounded-lg shadow-lg mt-10">
         <div className="w-full overflow-x-auto">
           {/* Column Headers */}
-          <div className="min-w-[700px] bg-black/50 backdrop-blur-md p-4 flex text-gray-200 font-semibold text-lg">
+          <div className="min-w-[700px] bg-black/50 backdrop-blur-md rounded-lg p-4 flex text-gray-200 font-semibold text-lg">
             {[
               "Rank",
               "UserId",

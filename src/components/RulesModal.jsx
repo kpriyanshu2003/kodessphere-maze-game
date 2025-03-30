@@ -4,13 +4,13 @@ const RulesModal = ({ showRules, setShowRules }) => {
   if (!showRules) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-opacity-70 flex items-center justify-center z-50 p-4">
       <div
-        className="rounded-xl shadow-2xl max-w-md w-full p-6 max-h-[80vh] overflow-y-auto relative text-white"
+        className="rounded-xl shadow-2xl w-1/2 p-6 max-h-[80vh] overflow-y-auto relative text-white"
         style={{
           background: "linear-gradient(180deg, #000033 0%, #000066 100%)",
-          boxShadow:
-            "0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)",
+          // boxShadow:
+          //   "0 0 30px rgba(255, 255, 0, 0.5), inset 0 0 20px rgba(0, 0, 255, 0.3)",
           border: "4px solid #0000AA",
         }}
       >
@@ -31,18 +31,15 @@ const RulesModal = ({ showRules, setShowRules }) => {
         </button>
 
         {/* Pac-Man dots decoration - top */}
-        <div className="absolute top-0 left-0 w-full h-6 flex justify-around items-center">
+        {/* <div className="absolute top-0 left-0 w-full h-6 flex justify-around items-center">
           {[...Array(10)].map((_, i) => (
             <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
           ))}
-        </div>
+        </div> */}
 
         <h2
           className="text-2xl font-bold mb-6 text-yellow-300 text-center"
-          style={{
-            textShadow: "0 0 10px rgba(255, 255, 0, 0.7)",
-            fontFamily: '"Press Start 2P", cursive, system-ui',
-          }}
+          style={{ textShadow: "0 0 10px rgba(255, 255, 0, 0.7)" }}
         >
           GAME RULES
         </h2>
@@ -188,18 +185,15 @@ const RulesModal = ({ showRules, setShowRules }) => {
             border: "3px solid #FFAA00",
           }}
         >
-          <div className="w-5 h-5 bg-black rounded-full relative mr-2">
-            <div className="absolute right-0 top-1/4 w-0 h-0 border-t-[5px] border-b-[5px] border-r-[8px] border-transparent border-r-black"></div>
-          </div>
           GOT IT!
         </button>
 
         {/* Pac-Man dots decoration - bottom */}
-        <div className="absolute bottom-0 left-0 w-full h-6 flex justify-around items-center">
+        {/* <div className="absolute bottom-0 left-0 w-full h-6 flex justify-around items-center">
           {[...Array(10)].map((_, i) => (
             <div key={i} className="w-2 h-2 rounded-full bg-yellow-300"></div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

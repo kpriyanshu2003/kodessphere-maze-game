@@ -1,26 +1,50 @@
 import { Home, Key, Flag } from "lucide-react";
 
-export default function MazeRenderer({ maze, playerPosition, hasKey }) {
+export default function MazeRenderer({
+  maze,
+  playerPosition,
+  hasKey,
+  visibilityRange = 2,
+}) {
   if (!maze) return null;
+
+  const minRowVisible = Math.max(0, playerPosition.x - visibilityRange);
+  const maxRowVisible = Math.min(
+    maze.length - 1,
+    playerPosition.x + visibilityRange
+  );
+  const minColVisible = Math.max(0, playerPosition.y - visibilityRange);
+  const maxColVisible = Math.min(
+    maze[0].length - 1,
+    playerPosition.y + visibilityRange
+  );
 
   return (
     <div
-      className="grid gap-0 relative "
+      className="grid gap-0 w-full border-2 rounded-lg border-[#2121De] overflow-hidden"
       style={{
         gridTemplateColumns: `repeat(${maze[0].length}, 1fr)`,
-        width: "100%",
         maxWidth: `${maze[0].length * 40}px`,
-        background: "#000",
-        padding: "12px",
-        borderRadius: "12px",
-        boxShadow: "0 0 20px rgba(0, 162, 255, 0.5)",
-        border: "4px solid #0066cc",
       }}
     >
       {maze.map((row, rowIndex) =>
         row.map((cell, colIndex) => {
           const isPlayer =
             playerPosition.x === rowIndex && playerPosition.y === colIndex;
+          const isVisible =
+            rowIndex >= minRowVisible &&
+            rowIndex <= maxRowVisible &&
+            colIndex >= minColVisible &&
+            colIndex <= maxColVisible;
+
+          // Only show cells that are visible or are the player
+          if (!isVisible && !isPlayer)
+            return (
+              <div
+                key={`${rowIndex}-${colIndex}`}
+                className="bg-black aspect-square"
+              />
+            );
 
           return (
             <div
@@ -47,7 +71,6 @@ export default function MazeRenderer({ maze, playerPosition, hasKey }) {
                 !cell.isStart && (
                   <div className="absolute inset-0 m-auto w-1.5 h-1.5 bg-blue-300 rounded-full opacity-50"></div>
                 )}
-
               {cell.isStart && !isPlayer && (
                 <Home
                   className="absolute inset-0 m-auto text-green-400"
@@ -56,9 +79,8 @@ export default function MazeRenderer({ maze, playerPosition, hasKey }) {
               )}
               {cell.isKey && !hasKey && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
                   <Key
-                    className="absolute inset-0 m-auto text-yellow-800"
+                    className="absolute inset-0 m-auto text-yellow-400"
                     size={14}
                   />
                 </div>
@@ -73,9 +95,22 @@ export default function MazeRenderer({ maze, playerPosition, hasKey }) {
                 </div>
               )}
               {isPlayer && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-3/4 h-3/4 bg-yellow-400 rounded-full animate-pulse"></div>
-                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon icon-tabler icon-tabler-pacman translate-x-2 translate-y-2"
+                  width="24"
+                  height="24"
+                  viewBox="-5 0 24 24"
+                  strokeWidth="2"
+                  stroke="#ff0"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M5.636 5.636a9 9 0 0 1 13.397 .747l-5.619 5.617l5.619 5.617a9 9 0 1 1 -13.397 -11.981z" />
+                  <circle cx="11.5" cy="7.5" r="1" fill="currentColor" />
+                </svg>
               )}
             </div>
           );

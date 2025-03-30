@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+.font-pacman {
+  src: url("/src/fonts/Pacmania.otf") format("opentype");
+  font-family: "Pacmania", "consolas";
+}
+
 /* Game specific animations */
 @keyframes pulse-glow {
   0%,

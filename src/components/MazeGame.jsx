@@ -13,6 +13,7 @@ export default function MazeGame({ user }) {
   // Game states
   const [gameState, setGameState] = useState("start"); // start, playing, paused, completed, gameover
   const [currentLevel, setCurrentLevel] = useState(1);
+  const [isSelected, setIsSelected] = useState(1);
   const [showRules, setShowRules] = useState(false);
   const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
   const [hasKey, setHasKey] = useState(false);
@@ -29,9 +30,9 @@ export default function MazeGame({ user }) {
 
   // Level configurations
   const levels = {
-    1: { size: 5, time: 60, name: "Novice" },
-    2: { size: 8, time: 90, name: "Explorer" },
-    3: { size: 12, time: 120, name: "Master" },
+    1: { size: 5, name: "Novice" },
+    2: { size: 10, name: "Explorer" },
+    3: { size: 15, name: "Master" },
   };
 
   // Initialize the game
@@ -177,7 +178,7 @@ export default function MazeGame({ user }) {
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+    return `${mins < 10 ? "0" : ""}${mins}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
   // Render game screens based on state
@@ -186,6 +187,8 @@ export default function MazeGame({ user }) {
       case "start":
         return (
           <StartScreen
+            isSelected={isSelected}
+            setIsSelected={setIsSelected}
             levels={levels}
             startGame={startGame}
             setShowRules={setShowRules}
@@ -206,19 +209,19 @@ export default function MazeGame({ user }) {
             movePlayer={movePlayer}
           />
         );
-      case "paused":
-        return (
-          <PauseScreen
-            score={score}
-            currentLevel={currentLevel}
-            levels={levels}
-            timer={timer}
-            elapsedTime={elapsedTime}
-            formatTime={formatTime}
-            setGameState={setGameState}
-            restartGame={restartGame}
-          />
-        );
+      // case "paused":
+      //   return (
+      //     <PauseScreen
+      //       score={score}
+      //       currentLevel={currentLevel}
+      //       levels={levels}
+      //       timer={timer}
+      //       elapsedTime={elapsedTime}
+      //       formatTime={formatTime}
+      //       setGameState={setGameState}
+      //       restartGame={restartGame}
+      //     />
+      //   );
       case "completed":
         return (
           <LevelCompleteScreen
@@ -233,31 +236,29 @@ export default function MazeGame({ user }) {
             nextLevel={nextLevel}
           />
         );
-      case "gameover":
-        return (
-          <GameOverScreen
-            user={user}
-            moves={moves}
-            timer={timer}
-            score={score}
-            currentLevel={currentLevel}
-            levels={levels}
-            elapsedTime={elapsedTime}
-            formatTime={formatTime}
-            restartGame={restartGame}
-          />
-        );
+      // case "gameover":
+      //   return (
+      //     <GameOverScreen
+      //       user={user}
+      //       moves={moves}
+      //       timer={timer}
+      //       score={score}
+      //       currentLevel={currentLevel}
+      //       levels={levels}
+      //       elapsedTime={elapsedTime}
+      //       formatTime={formatTime}
+      //       restartGame={restartGame}
+      //     />
+      //   );
       default:
         return null;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-4xl">
-        {renderGameScreen()}
-        <RulesModal showRules={showRules} setShowRules={setShowRules} />
-      </div>
+    <div className="min-h-screen min-w-screen grid place-items-center bg-[#040404]">
+      {renderGameScreen()}
+      <RulesModal showRules={showRules} setShowRules={setShowRules} />
     </div>
   );
 }

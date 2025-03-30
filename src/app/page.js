@@ -5,7 +5,7 @@ import Register from "@/components/Register";
 import { useState } from "react";
 
 export default function Home() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState("d");
   return (
     <>{user ? <MazeGame user={user} /> : <Register setUser={setUser} />}</>
   );
