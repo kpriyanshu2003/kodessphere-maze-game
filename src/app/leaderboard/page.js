@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function Home() {
@@ -21,123 +22,67 @@ export default function Home() {
   }, []);
 
   return (
-    <div
-      className="min-h-screen bg-cover bg-center bg-fixed flex flex-col items-center p-4 sm:p-6 relative"
-      style={{
-        backgroundImage: "url('/background_image.jpg')",
-        backgroundColor: "rgba(0, 0, 0, 0.3)",
-        backgroundBlendMode: "darken",
-      }}
-    >
+    <div className="min-h-screen bg-black bg-cover bg-center bg-fixed flex flex-col items-center p-4 sm:p-6 relative font-mono">
       {/* Top Right Logo */}
       <div className="absolute top-4 right-4 p-2 bg-white/40 rounded-lg">
-        <img
+        <Image
           src="/konnexions.png"
           alt="Konnexions Logo"
           className="h-12 sm:h-16 w-auto"
+          height={100}
+          width={200}
         />
       </div>
 
-      <h1 className="text-white text-3xl sm:text-5xl font-bold mt-6 sm:mt-10 text-center tracking-wide">
+      <h1 className="text-yellow-300 text-3xl sm:text-5xl font-bold mt-6 sm:mt-10 text-center tracking-wide font-pacman">
         Kodesphere 2.0
       </h1>
 
-      {/* Medal Display */}
-      <div className="flex flex-wrap items-center justify-center mt-6 gap-4 sm:gap-6">
-        <div className="flex flex-col items-center">
-          <img
-            src="/second.webp"
-            alt="Second Place"
-            className="h-20 sm:h-28 w-auto"
-          />
-          <p className="text-lg sm:text-xl font-bold">
-            <span className="text-yellow-400">#2</span>{" "}
-            <span className="text-white">{leaderboard[1]?.name}</span>
-          </p>
-        </div>
-        <div className="flex flex-col items-center">
-          <img
-            src="/first.webp"
-            alt="First Place"
-            className="h-24 sm:h-36 w-auto"
-          />
-          <p className="text-lg sm:text-xl font-bold">
-            <span className="text-yellow-400">#1</span>{" "}
-            <span className="text-white">{leaderboard[0]?.name}</span>
-          </p>
-        </div>
-        <div className="flex flex-col items-center">
-          <img
-            src="/third.webp"
-            alt="Third Place"
-            className="h-20 sm:h-28 w-auto"
-          />
-          <p className="text-lg sm:text-xl font-bold">
-            <span className="text-yellow-400">#3</span>{" "}
-            <span className="text-white">{leaderboard[2]?.name}</span>
-          </p>
-        </div>
-      </div>
-
-      {/* Leaderboard (No Border, No Vertical Scrollbar) */}
-      {/* Leaderboard Table */}
-      <div className="w-full max-w-5xl rounded-lg shadow-lg mt-10">
-        <div className="w-full overflow-x-auto">
-          {/* Column Headers */}
-          <div className="min-w-[700px] bg-black/50 backdrop-blur-md rounded-lg p-4 flex text-gray-200 font-semibold text-lg">
-            {[
-              "Rank",
-              "UserId",
-              "Name",
-              "Level",
-              "Moves",
-              "Time Taken",
-              "Points Scored",
-            ].map((header, index) => (
-              <div key={index} className="w-1/6 text-center">
-                {header}
-              </div>
-            ))}
-          </div>
-
-          {/* Player Rows */}
-          <div className="w-full">
+      <div className="w-full max-w-5xl rounded-lg shadow-lg mt-20">
+        <table className="w-full min-w-[700px] border-collapse backdrop-blur-md">
+          <thead>
+            <tr className="text-white font-semibold text-lg border-b-2 border-[#2121DE]">
+              <th className="p-4 text-center">Rank</th>
+              <th className="p-4 text-center">UserId</th>
+              <th className="p-4 text-center">Name</th>
+              <th className="p-4 text-center">Level</th>
+              <th className="p-4 text-center">Moves</th>
+              <th className="p-4 text-center">Time Taken</th>
+              <th className="p-4 text-center">Points Scored</th>
+            </tr>
+          </thead>
+          <tbody>
             {leaderboard.map((player, index) => {
               const rankStyles = [
-                "bg-yellow-500/80", // Rank 1 - Gold
-                "bg-gray-400/80", // Rank 2 - Silver
-                "bg-red-900/80", // Rank 3 - Bronze
+                "text-yellow-300", // Rank 1 - Gold
+                "text-gray-400", // Rank 2 - Silver
+                "text-red-300", // Rank 3 - Bronze
               ];
-              const bgColor = rankStyles[index] || "bg-black/30"; // Default for ranks > 3
+              const rankStyle = rankStyles[index] || "text-gray-300"; // Default for ranks > 3
 
               return (
-                <div
+                <tr
                   key={player.user.id}
-                  className={`min-w-[700px] ${bgColor} backdrop-blur-lg p-4 rounded-lg shadow-lg flex justify-between text-gray-300 mt-2`}
+                  className={`${rankStyle} text-xl rounded-lg shadow-lg mt-2`}
                 >
-                  <div className="w-1/12 text-center font-bold text-lg">
-                    <span className="text-yellow-400">#{index + 1}</span>
-                  </div>
-                  {[
-                    player.user.id,
-                    player.user.name,
-                    player.level,
-                    player.moves,
-                    player.totalTimeTaken || "00:00:00",
-                    player.totalPointsScored,
-                  ].map((value, idx) => (
-                    <div
-                      key={idx}
-                      className="w-1/6 text-center text-sm sm:text-base"
-                    >
-                      {value}
-                    </div>
-                  ))}
-                </div>
+                  <td className="p-4 text-center font-bold">
+                    <span className="">#{index + 1}</span>
+                  </td>
+                  <td className="p-4 text-center">{player.user.id}</td>
+                  <td className="p-4 text-center">{player.user.name}</td>
+                  <td className="p-4 text-center">{player.level}</td>
+                  <td className="p-4 text-center">{player.moves}</td>
+                  <td className="p-4 text-center">
+                    {player.totalTimeTaken || "00:00:00"}
+                  </td>
+                  <td className="p-4 text-center">
+                    {player.totalPointsScored}
+                  </td>
+                </tr>
               );
             })}
-          </div>
-        </div>
+          </tbody>
+        </table>
       </div>
     </div>
   );
