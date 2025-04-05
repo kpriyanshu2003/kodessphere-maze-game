@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import { ChevronRight } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
+import { ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function LevelCompleteScreen({
   user,
@@ -15,15 +15,15 @@ export default function LevelCompleteScreen({
   score,
   nextLevel,
 }) {
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(null);
   const updateLeaderboard = async () => {
     try {
-      setLoading(true)
-      const response = await fetch('/api/leaderboard', {
-        method: 'POST',
+      setLoading(true);
+      const response = await fetch("/api/leaderboard", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: user.name,
@@ -31,24 +31,24 @@ export default function LevelCompleteScreen({
           level: currentLevel,
           score: 100,
           moves,
-          totalTimeTaken: `${timer ?? ''}`,
+          totalTimeTaken: `${elapsedTime ?? ""}`,
           totalPointsScored: score,
         }),
-      })
-      const data = await response.json()
-      console.log('data', data)
-      setData(data)
-      toast.success('Leaderboard updated successfully')
+      });
+      const data = await response.json();
+      console.log("data", data);
+      setData(data);
+      // toast.success('Leaderboard updated successfully')
     } catch (err) {
-      console.log(err)
-      toast.error('Error updating leaderboard')
+      console.log(err);
+      toast.error("Error updating leaderboard");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
   useEffect(() => {
-    updateLeaderboard()
-  }, [])
+    updateLeaderboard();
+  }, []);
   return (
     <div
       className="flex flex-col items-center justify-center space-y-6 p-8 rounded-xl shadow-2xl max-w-md w-full mx-auto text-white relative overflow-hidden border-2 border-[#2121de]"
@@ -91,13 +91,13 @@ export default function LevelCompleteScreen({
           score breakdown
         </div>
 
-        <div className="flex justify-between">
+        {/* <div className="flex justify-between">
           <div className="flex items-center">
             <div className="w-3 h-3 bg-yellow-300 rounded-full mr-2"></div>
             <span className="text-blue-300">time bonus:</span>
           </div>
           <span className="text-white">+ {timer * 5} pts</span>
-        </div>
+        </div> */}
 
         <div className="flex justify-between">
           <div className="flex items-center">
@@ -136,8 +136,7 @@ export default function LevelCompleteScreen({
         <div className="border-t-2 border-blue-700 my-3 pt-3 flex justify-between font-bold">
           <span className="text-yellow-300">level score:</span>
           <span className="text-yellow-300 text-xl">
-            {/* {500 + timer * 5 - Math.max(0, moves - optimalPath.length) * 10} */}
-            hhe
+            {500 - Math.max(0, moves - optimalPath.length) * 10}
           </span>
         </div>
 
@@ -149,7 +148,7 @@ export default function LevelCompleteScreen({
               500 +
               timer * 5 -
               Math.max(0, moves - optimalPath.length) * 10} */}
-            {data?.gameRecord?.totalPointsScored ?? '...'}
+            {data?.gameRecord?.totalPointsScored ?? "..."}
           </span>
         </div>
       </div>
@@ -179,7 +178,7 @@ export default function LevelCompleteScreen({
           //   border: "3px solid #FFAA00",
           // }}
         >
-          <span>{loading ? 'submitting' : 'submit'}</span>{' '}
+          <span>{loading ? "submitting" : "submit"}</span>{" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="icon icon-tabler icon-tabler-pacman"
@@ -207,5 +206,5 @@ export default function LevelCompleteScreen({
         ))}
       </div> */}
     </div>
-  )
+  );
 }

@@ -87,9 +87,9 @@ export default function MazeRenderer({
               )}
               {cell.isGoal && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-5 h-5 bg-red-400 rounded-full"></div>
+                  <div className="w-5 h-5 rounded-full"></div>
                   <Flag
-                    className="absolute inset-0 m-auto text-red-800"
+                    className="absolute inset-0 m-auto text-red-500"
                     size={14}
                   />
                 </div>

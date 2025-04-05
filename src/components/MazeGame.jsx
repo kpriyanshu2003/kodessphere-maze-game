@@ -170,10 +170,10 @@ export default function MazeGame({ user }) {
     setGameState("playing");
   };
 
-  const restartGame = () => {
-    setGameState("start");
-    setScore(0);
-  };
+  // const restartGame = () => {
+  //   setGameState("start");
+  //   setScore(0);
+  // };
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -199,7 +199,7 @@ export default function MazeGame({ user }) {
           <GameBoard
             currentLevel={currentLevel}
             levels={levels}
-            timer={timer}
+            // timer={timer}
             elapsedTime={elapsedTime}
             formatTime={formatTime}
             setShowRules={setShowRules}
@@ -227,7 +227,7 @@ export default function MazeGame({ user }) {
           <LevelCompleteScreen
             user={user}
             currentLevel={currentLevel}
-            timer={timer}
+            // timer={timer}
             moves={moves}
             optimalPath={optimalPath}
             elapsedTime={elapsedTime}

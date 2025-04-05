@@ -15,7 +15,7 @@ export default function GameBoard({
   movePlayer,
 }) {
   return (
-    <div className="text-white">
+    <div className="text-white w-1/2 h-1/2">
       <div className="flex justify-between w-full mb-4">
         <h2 className="text-xl font-bold font-pacman">
           Level {currentLevel} : {levels[currentLevel].name}
@@ -46,7 +46,7 @@ export default function GameBoard({
         </div>
       </div>
 
-      <div className="w-full grid place-items-center">
+      <div className="w-full h-full grid place-items-center">
         <MazeRenderer
           maze={maze}
           playerPosition={playerPosition}
