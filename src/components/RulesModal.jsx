@@ -1,7 +1,7 @@
-import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react";
 
 const RulesModal = ({ showRules, setShowRules }) => {
-  if (!showRules) return null
+  if (!showRules) return null;
 
   return (
     <div className="fixed inset-0 bg-opacity-70 flex items-center justify-center z-50 p-4 bg-black font-mono">
@@ -108,7 +108,7 @@ const RulesModal = ({ showRules, setShowRules }) => {
                   <span className="font-bold text-yellow-200 w-[70px]">
                     Level 1:
                   </span>
-                  <span className="ml-2">10x10 maze, 1 minute</span>
+                  <span className="ml-2">8x8 maze, 20 seconds</span>
                 </div>
               </li>
               <li className="flex items-start gap-2">
@@ -117,7 +117,7 @@ const RulesModal = ({ showRules, setShowRules }) => {
                   <span className="font-bold text-yellow-200 w-[70px]">
                     Level 2:
                   </span>
-                  <span className="ml-2">15x15 maze, 1:30 minutes</span>
+                  <span className="ml-2">10x10 maze, 30 seconds</span>
                 </div>
               </li>
               <li className="flex items-start gap-2">
@@ -126,7 +126,16 @@ const RulesModal = ({ showRules, setShowRules }) => {
                   <span className="font-bold text-yellow-200 w-[70px]">
                     Level 3:
                   </span>
-                  <span className="ml-2">20x20 maze, 2 minutes</span>
+                  <span className="ml-2">15x15 maze, 1 minute</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-2">
+                <div className="w-3 h-3 bg-orange-400 rounded-t-full mt-1"></div>
+                <div className="flex">
+                  <span className="font-bold text-yellow-200 w-[70px]">
+                    Level 3:
+                  </span>
+                  <span className="ml-2">25x25 maze, 2 minute</span>
                 </div>
               </li>
             </ul>
@@ -195,8 +204,8 @@ const RulesModal = ({ showRules, setShowRules }) => {
           className="mt-6 w-full py-3 rounded-full cursor-pointer font-bold text-lg transform transition-all duration-300  flex items-center justify-center border-2 border-yellow-300 text-yellow-300 hover:bg-yellow-300 hover:text-black"
           style={{
             // background: "linear-gradient(to right, #FFFF00, #FFCC00)",
-            ':hover': {
-              boxShadow: '0 0 15px rgba(255, 255, 0, 0.7)',
+            ":hover": {
+              boxShadow: "0 0 15px rgba(255, 255, 0, 0.7)",
             },
 
             // border: "3px solid #FFAA00",
@@ -213,7 +222,7 @@ const RulesModal = ({ showRules, setShowRules }) => {
         </div> */}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RulesModal
+export default RulesModal;
