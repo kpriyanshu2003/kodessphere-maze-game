@@ -2,7 +2,8 @@
 
 import { Clock, Trophy } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 export default function GameOverScreen({
   user,
@@ -11,12 +12,22 @@ export default function GameOverScreen({
   currentLevel,
   levels,
   elapsedTime,
-  formatTime,
+  totalElapsedTime,
+  formatTime, // Using the existing formatTime function
   restartGame,
   moves,
 }) {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [leaderboardData, setLeaderboardData] = useState(null)
+
   const updateLeaderboard = async () => {
+    if (!user?.email) {
+      console.error('User information is missing')
+      return
+    }
+
     try {
+      setIsSubmitting(true)
       const response = await fetch('/api/leaderboard', {
         method: 'POST',
         headers: {
@@ -26,21 +37,43 @@ export default function GameOverScreen({
           name: user.name,
           email: user.email,
           level: currentLevel,
-          score,
-          moves,
-          totalTimeTaken: `${timer ?? ''}`,
-          totalPointsScored: score,
+          score: score,
+          moves: moves,
+          totalTimeTaken: totalElapsedTime || elapsedTime, // Send raw seconds
         }),
       })
+
       const data = await response.json()
-      console.log('data', data)
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to update leaderboard')
+      }
+
+      setLeaderboardData(data)
+      console.log('Leaderboard updated:', data)
     } catch (err) {
-      console.log(err)
+      console.error('Error updating leaderboard:', err)
+      toast.error('Failed to update leaderboard')
+    } finally {
+      setIsSubmitting(false)
     }
   }
+
   useEffect(() => {
-    updateLeaderboard()
-  }, [user, currentLevel, score, moves, timer])
+    if (user?.email && !isSubmitting && !leaderboardData) {
+      updateLeaderboard()
+    }
+  }, [user, currentLevel, score, moves, elapsedTime])
+
+  // Display formatted time from API or use the local formatter
+  const displayTime = () => {
+    if (leaderboardData?.gameRecord?.formattedTime) {
+      return leaderboardData.gameRecord.formattedTime
+    } else {
+      return formatTime(totalElapsedTime || elapsedTime)
+    }
+  }
+
   return (
     <div
       className="flex flex-col items-center justify-center space-y-6 p-8 rounded-xl shadow-2xl max-w-md w-full mx-auto text-white relative overflow-hidden"
@@ -137,12 +170,12 @@ export default function GameOverScreen({
         </div>
 
         <div className="flex justify-between items-center border-b border-blue-800 pb-2">
-          <span className="text-blue-300">SCORE:</span>
+          <span className="text-blue-300">TOTAL SCORE:</span>
           <span
             className="text-yellow-300 font-bold text-2xl"
             style={{ textShadow: '0 0 5px rgba(255, 255, 0, 0.7)' }}
           >
-            {score}
+            {leaderboardData?.gameRecord?.totalPointsScored || score}
           </span>
         </div>
 
@@ -150,7 +183,9 @@ export default function GameOverScreen({
           <span className="text-blue-300">LEVEL REACHED:</span>
           <span className="text-white">
             {currentLevel} -{' '}
-            <span className="text-yellow-300">{levels[currentLevel].name}</span>
+            <span className="text-yellow-300">
+              {levels[currentLevel]?.name || 'Final Level'}
+            </span>
           </span>
         </div>
 
@@ -159,9 +194,7 @@ export default function GameOverScreen({
             <Clock size={14} className="text-blue-300 mr-2" />
             <span className="text-blue-300">TOTAL TIME:</span>
           </div>
-          <span className="text-white font-mono">
-            {formatTime(elapsedTime)}
-          </span>
+          <span className="text-white font-mono">{displayTime()}</span>
         </div>
 
         {/* Pac-Man highscore decoration */}

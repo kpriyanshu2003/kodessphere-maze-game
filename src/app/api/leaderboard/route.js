@@ -14,10 +14,18 @@ export async function GET() {
       take: 100, // Limit to top 100 to prevent large data transfers
     })
 
+    // Format the time in the response
+    const formattedLeaderboard = leaderboard.map((record) => ({
+      ...record,
+      formattedTime: formatTimeFromSeconds(
+        parseInt(record.totalTimeTaken) || 0,
+      ),
+    }))
+
     return NextResponse.json(
       {
         success: true,
-        leaderboard,
+        leaderboard: formattedLeaderboard,
         message: 'Leaderboard fetched successfully',
       },
       { status: 200 },
@@ -41,6 +49,7 @@ export async function POST(req) {
     // Parse request body and validate required fields
     const body = await req.json()
     const { name, email, level, score, moves, totalTimeTaken } = body
+    console.log('Received data:', body)
 
     // Input validation
     if (!name || !email || name.trim().length < 3) {
@@ -87,11 +96,11 @@ export async function POST(req) {
       where: { userId: user.id },
     })
 
-    // Ensure numeric values
+    // Ensure numeric values - store time as seconds
     const numLevel = parseInt(level) || 1
     const numScore = parseInt(score) || 0
     const numMoves = parseInt(moves) || 0
-    const strTimeTaken = String(totalTimeTaken || '') // Ensure it's a string
+    const numTimeTaken = parseInt(totalTimeTaken) || 0 // Store as integer seconds
 
     if (gameRecord) {
       // Only update fields if the new data is better
@@ -99,29 +108,16 @@ export async function POST(req) {
 
       if (numLevel > gameRecord.level) {
         updates.level = numLevel
-      }
-
-      if (numScore > gameRecord.totalPointsScored) {
         updates.totalPointsScored = numScore
-      }
-
-      // Only update moves if level is higher or score is higher at same level
-      if (
-        numLevel > gameRecord.level ||
-        (numLevel === gameRecord.level &&
-          numScore > gameRecord.totalPointsScored)
-      ) {
         updates.moves = numMoves
-      }
-
-      // Only update time if provided and if level is higher or score is higher at same level
-      if (
-        strTimeTaken &&
-        (numLevel > gameRecord.level ||
-          (numLevel === gameRecord.level &&
-            numScore > gameRecord.totalPointsScored))
-      ) {
-        updates.totalTimeTaken = strTimeTaken
+        updates.totalTimeTaken = numTimeTaken
+      } else if (numLevel === gameRecord.level) {
+        // At the same level, update if score is higher
+        if (numScore > gameRecord.totalPointsScored) {
+          updates.totalPointsScored = numScore
+          updates.moves = numMoves
+          updates.totalTimeTaken = numTimeTaken
+        }
       }
 
       // Only perform update if there are changes
@@ -138,17 +134,23 @@ export async function POST(req) {
           userId: user.id,
           level: numLevel,
           moves: numMoves,
-          totalTimeTaken: strTimeTaken,
+          totalTimeTaken: numTimeTaken,
           totalPointsScored: numScore,
         },
       })
+    }
+
+    // Add formatted time to the response
+    const gameRecordWithFormattedTime = {
+      ...gameRecord,
+      formattedTime: formatTimeFromSeconds(numTimeTaken),
     }
 
     // Return updated data
     return NextResponse.json({
       success: true,
       user,
-      gameRecord,
+      gameRecord: gameRecordWithFormattedTime,
       message: 'Leaderboard updated successfully',
     })
   } catch (error) {
@@ -162,4 +164,17 @@ export async function POST(req) {
       { status: 500 },
     )
   }
+}
+
+// Helper function to format seconds into HH:MM:SS
+function formatTimeFromSeconds(totalSeconds) {
+  const hours = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+
+  return [
+    hours.toString().padStart(2, '0'),
+    minutes.toString().padStart(2, '0'),
+    seconds.toString().padStart(2, '0'),
+  ].join(':')
 }

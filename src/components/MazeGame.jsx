@@ -10,7 +10,6 @@ import LevelCompleteScreen from '@/components/LevelCompleteScreen'
 import GameOverScreen from '@/components/GameOverScreen'
 
 export default function MazeGame({ user }) {
-  // Game states
   const [gameState, setGameState] = useState('start') // start, playing, paused, completed, gameover
   const [currentLevel, setCurrentLevel] = useState(1)
   const [isSelected, setIsSelected] = useState(1)
@@ -18,38 +17,70 @@ export default function MazeGame({ user }) {
   const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 })
   const [hasKey, setHasKey] = useState(false)
   const [maze, setMaze] = useState(null)
-  const [timer, setTimer] = useState(60) // Level 1 starts with 60 seconds
+  const [timer, setTimer] = useState(60)
   const [score, setScore] = useState(0)
   const [moves, setMoves] = useState(0)
   const [optimalPath, setOptimalPath] = useState([])
-  const [elapsedTime, setElapsedTime] = useState(0) // New state for elapsed time counter
+  const [elapsedTime, setElapsedTime] = useState(0)
+  const [totalElapsedTime, setTotalElapsedTime] = useState(0)
+  const [levelScore, setLevelScore] = useState(0)
 
   const timerRef = useRef(null)
-  const elapsedTimerRef = useRef(null) // Separate ref for elapsed time counter
+  const elapsedTimerRef = useRef(null)
   const mazeRef = useRef(null)
 
-  // Level configurations
   const levels = {
-    1: { size: 10, name: 'Novice' },
-    2: { size: 15, name: 'Explorer' },
-    3: { size: 20, name: 'Master' },
+    1: { size: 5, name: 'Novice', time: 60 },
+    2: { size: 5, name: 'Explorer', time: 90 },
+    3: { size: 5, name: 'Master', time: 120 },
   }
 
-  // Initialize the game
+  // Clear all timers when component unmounts or gameState changes
   useEffect(() => {
+    return () => {
+      clearInterval(timerRef.current)
+      clearInterval(elapsedTimerRef.current)
+    }
+  }, [])
+
+  // Initialize level when playing state is entered
+  useEffect(() => {
+    // Clear any existing timers when game state changes
+    clearInterval(timerRef.current)
+    clearInterval(elapsedTimerRef.current)
+
     if (gameState === 'playing') {
       initializeLevel(currentLevel)
-      // Reset elapsed time when starting a new level
-      setElapsedTime(0)
-    }
+      setElapsedTime(0) // Reset level time
 
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current)
-      if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
+      // Start both timers only when in playing state
+      startTimers()
     }
   }, [gameState, currentLevel])
 
-  // Handle keyboard controls
+  // Start both countdown and elapsed timers
+  const startTimers = () => {
+    // Start the countdown timer
+    timerRef.current = setInterval(() => {
+      setTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current)
+          clearInterval(elapsedTimerRef.current)
+          setGameState('gameover')
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+
+    // Start the elapsed time counter
+    elapsedTimerRef.current = setInterval(() => {
+      setElapsedTime((prev) => prev + 1)
+      setTotalElapsedTime((prev) => prev + 1)
+    }, 1000)
+  }
+
+  // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (gameState !== 'playing') return
@@ -76,23 +107,6 @@ export default function MazeGame({ user }) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [gameState, playerPosition, maze, hasKey])
 
-  // Timer counter (counting up only)
-  useEffect(() => {
-    if (gameState === 'playing') {
-      // Elapsed time counter (counting up)
-      elapsedTimerRef.current = setInterval(() => {
-        setElapsedTime((prev) => prev + 1)
-      }, 1000)
-    } else {
-      // Clear timer when not playing
-      if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
-    }
-
-    return () => {
-      if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
-    }
-  }, [gameState])
-
   const initializeLevel = (level) => {
     const levelConfig = levels[level]
     const mazeSolver = new MazeSolver(levelConfig.size, levelConfig.size)
@@ -103,7 +117,6 @@ export default function MazeGame({ user }) {
     setTimer(levelConfig.time)
     setMoves(0)
 
-    // Calculate optimal path for scoring
     const pathToKey = mazeSolver.solveMaze(mazeSolver.start, mazeSolver.key)
     const pathToGoal = mazeSolver.solveMaze(mazeSolver.key, mazeSolver.goal)
     setOptimalPath([...pathToKey, ...pathToGoal])
@@ -117,7 +130,6 @@ export default function MazeGame({ user }) {
     const newX = playerPosition.x + dx
     const newY = playerPosition.y + dy
 
-    // Check if the move is valid
     if (
       newX >= 0 &&
       newX < maze.length &&
@@ -128,12 +140,10 @@ export default function MazeGame({ user }) {
       setPlayerPosition({ x: newX, y: newY })
       setMoves((prev) => prev + 1)
 
-      // Check if player reached the key
       if (maze[newX][newY].isKey) {
         setHasKey(true)
       }
 
-      // Check if player reached the goal with the key
       if (maze[newX][newY].isGoal && hasKey) {
         levelCompleted()
       }
@@ -141,20 +151,20 @@ export default function MazeGame({ user }) {
   }
 
   const levelCompleted = () => {
+    // Stop all timers immediately when level is completed
     clearInterval(timerRef.current)
-    clearInterval(elapsedTimerRef.current) // Clear elapsed timer when level is completed
+    clearInterval(elapsedTimerRef.current)
 
-    // Calculate score based on time left and moves
-    const timeBonus = timer * 5
+    const timeBonus = (timer % 10) * 5
     const movePenalty = Math.max(0, moves - optimalPath.length) * 10
     const levelScore = 500 + timeBonus - movePenalty
 
+    setLevelScore(levelScore)
     setScore((prev) => prev + levelScore)
 
     if (currentLevel < 3) {
       setGameState('completed')
     } else {
-      // Game finished - add to leaderboard
       setGameState('gameover')
     }
   }
@@ -163,6 +173,7 @@ export default function MazeGame({ user }) {
     setGameState('playing')
     setScore(0)
     setCurrentLevel(1)
+    setTotalElapsedTime(0) // Reset total time when starting a new game
   }
 
   const nextLevel = () => {
@@ -170,10 +181,13 @@ export default function MazeGame({ user }) {
     setGameState('playing')
   }
 
-  // const restartGame = () => {
-  //   setGameState("start");
-  //   setScore(0);
-  // };
+  const restartGame = () => {
+    setGameState('start')
+    setScore(0)
+    setCurrentLevel(1)
+    setTimer(levels[1].time)
+    setTotalElapsedTime(0) // Reset total time when restarting
+  }
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60)
@@ -181,7 +195,6 @@ export default function MazeGame({ user }) {
     return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`
   }
 
-  // Render game screens based on state
   const renderGameScreen = () => {
     switch (gameState) {
       case 'start':
@@ -199,7 +212,6 @@ export default function MazeGame({ user }) {
           <GameBoard
             currentLevel={currentLevel}
             levels={levels}
-            // timer={timer}
             elapsedTime={elapsedTime}
             formatTime={formatTime}
             setShowRules={setShowRules}
@@ -209,47 +221,49 @@ export default function MazeGame({ user }) {
             movePlayer={movePlayer}
           />
         )
-      // case "paused":
-      //   return (
-      //     <PauseScreen
-      //       score={score}
-      //       currentLevel={currentLevel}
-      //       levels={levels}
-      //       timer={timer}
-      //       elapsedTime={elapsedTime}
-      //       formatTime={formatTime}
-      //       setGameState={setGameState}
-      //       restartGame={restartGame}
-      //     />
-      //   );
+      case 'paused':
+        return (
+          <PauseScreen
+            score={score}
+            currentLevel={currentLevel}
+            levels={levels}
+            timer={timer}
+            elapsedTime={elapsedTime}
+            formatTime={formatTime}
+            setGameState={setGameState}
+            restartGame={restartGame}
+          />
+        )
       case 'completed':
         return (
           <LevelCompleteScreen
             user={user}
             currentLevel={currentLevel}
-            // timer={timer}
             moves={moves}
             optimalPath={optimalPath}
             elapsedTime={elapsedTime}
+            totalElapsedTime={totalElapsedTime}
             formatTime={formatTime}
             score={score}
             nextLevel={nextLevel}
+            levelScore={levelScore}
           />
         )
-      // case "gameover":
-      //   return (
-      //     <GameOverScreen
-      //       user={user}
-      //       moves={moves}
-      //       timer={timer}
-      //       score={score}
-      //       currentLevel={currentLevel}
-      //       levels={levels}
-      //       elapsedTime={elapsedTime}
-      //       formatTime={formatTime}
-      //       restartGame={restartGame}
-      //     />
-      //   );
+      case 'gameover':
+        return (
+          <GameOverScreen
+            user={user}
+            moves={moves}
+            timer={timer}
+            score={score}
+            currentLevel={currentLevel}
+            levels={levels}
+            elapsedTime={elapsedTime}
+            totalElapsedTime={totalElapsedTime}
+            formatTime={formatTime}
+            restartGame={restartGame}
+          />
+        )
       default:
         return null
     }

@@ -1,25 +1,37 @@
-"use client";
-import Image from "next/image";
-import { useState, useEffect } from "react";
+'use client'
+import Image from 'next/image'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
-  const [leaderboard, setLeaderboard] = useState([]);
+  const [leaderboard, setLeaderboard] = useState([])
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const response = await fetch("/api/leaderboard");
-        const data = await response.json();
-        console.log("Leaderboard data", data);
-        setLeaderboard(data.leaderboard);
+        const response = await fetch('/api/leaderboard')
+        const data = await response.json()
+        console.log('Leaderboard data', data)
+        setLeaderboard(data.leaderboard)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
-    };
-    fetchLeaderboard();
-    const interval = setInterval(fetchLeaderboard, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    }
+    fetchLeaderboard()
+    const interval = setInterval(fetchLeaderboard, 5000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const formatTime = (timeStr) => {
+    const totalSeconds = parseInt(timeStr, 10)
+    if (isNaN(totalSeconds)) return '00:00:00'
+
+    const hours = Math.floor(totalSeconds / 3600)
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+    const seconds = totalSeconds % 60
+
+    const pad = (n) => String(n).padStart(2, '0')
+    return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+  }
 
   return (
     <div className="min-h-screen bg-black bg-cover bg-center bg-fixed flex flex-col items-center p-4 sm:p-6 relative font-mono">
@@ -54,11 +66,11 @@ export default function Home() {
           <tbody>
             {leaderboard.map((player, index) => {
               const rankStyles = [
-                "text-yellow-300", // Rank 1 - Gold
-                "text-gray-400", // Rank 2 - Silver
-                "text-red-300", // Rank 3 - Bronze
-              ];
-              const rankStyle = rankStyles[index] || "text-gray-300"; // Default for ranks > 3
+                'text-yellow-300', // Rank 1 - Gold
+                'text-gray-400', // Rank 2 - Silver
+                'text-red-300', // Rank 3 - Bronze
+              ]
+              const rankStyle = rankStyles[index] || 'text-gray-300' // Default for ranks > 3
 
               return (
                 <tr
@@ -73,17 +85,17 @@ export default function Home() {
                   <td className="p-4 text-center">{player.level}</td>
                   <td className="p-4 text-center">{player.moves}</td>
                   <td className="p-4 text-center">
-                    {player.totalTimeTaken || "00:00:00"}
+                    {formatTime(player.totalTimeTaken)}
                   </td>
                   <td className="p-4 text-center">
                     {player.totalPointsScored}
                   </td>
                 </tr>
-              );
+              )
             })}
           </tbody>
         </table>
       </div>
     </div>
-  );
+  )
 }
