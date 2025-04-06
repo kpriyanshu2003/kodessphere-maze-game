@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { Info, Trophy } from 'lucide-react'
+import Link from "next/link";
+import { Info, Trophy } from "lucide-react";
 
 export default function StartScreen({
   levels,
@@ -26,7 +26,7 @@ export default function StartScreen({
               onClick={() => setIsSelected(level)}
               className={`transition-all duration-300 flex items-center justify-between sm:justify-center gap-4 border-2 rounded-lg px-4 py-3 border-[#2121DE] text-[#FFFF00] font-mono font-bold cursor-pointer ${
                 isSelected === level &&
-                'outline-offset-4 outline outline-red-500 '
+                "outline-offset-4 outline outline-red-500 "
               }`}
             >
               <div className="text-2xl font-bold">{level}</div>
@@ -45,9 +45,9 @@ export default function StartScreen({
         {/* Start Game Button */}
         <button
           onClick={startGame}
-          className="mt-8 w-full max-w-sm border-2 border-yellow-400 rounded-lg font-mono px-6 py-4 flex justify-center items-center gap-2 text-[#FFFF00] shadow-lg hover:shadow-yellow-500 transition"
+          className="mt-8 w-full max-w-sm border-2 border-yellow-400 rounded-lg font-mono px-6 py-4 flex justify-center items-center gap-2 text-[#FFFF00] shadow-lg hover:shadow-yellow-500 transition duration-300 cursor-pointer"
         >
-          Start Game{' '}
+          Start Game{" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="icon icon-tabler icon-tabler-pacman"
@@ -70,10 +70,10 @@ export default function StartScreen({
         <div className="flex flex-col sm:flex-row justify-between gap-4 w-full max-w-sm mt-6 font-mono font-bold">
           <button
             onClick={() => setShowRules(true)}
-            className="border-2 border-[#2121DE] rounded-lg flex items-center justify-center gap-2 py-3 w-full shadow-md hover:shadow-blue-500 transition"
+            className="border-2 border-[#2121DE] rounded-lg flex items-center justify-center gap-2 py-3 w-full shadow-md hover:shadow-blue-500 transition cursor-pointer"
           >
             <Info size={18} />
-            <span>Rules</span>
+            <span>rules</span>
           </button>
 
           <Link
@@ -81,10 +81,10 @@ export default function StartScreen({
             className="border-2 border-[#2121DE] rounded-lg flex items-center justify-center gap-2 py-3 w-full shadow-md hover:shadow-blue-500 transition"
           >
             <Trophy size={18} />
-            <span>Leaderboard</span>
+            <span>leaderboard</span>
           </Link>
         </div>
       </div>
     </div>
-  )
+  );
 }
