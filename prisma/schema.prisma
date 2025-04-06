@@ -20,7 +20,7 @@ model GameRecord {
   userId    Int
   level     Int      @default(1)
   moves     Int      @default(0)
-  totalTimeTaken String @default("")
+  totalTimeTaken Int @default(0)
   totalPointsScored Int  @default(0)
   createdAt DateTime @default(now())
 }

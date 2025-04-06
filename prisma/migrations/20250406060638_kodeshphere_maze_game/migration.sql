@@ -13,7 +13,7 @@ CREATE TABLE "GameRecord" (
     "userId" INTEGER NOT NULL,
     "level" INTEGER NOT NULL DEFAULT 1,
     "moves" INTEGER NOT NULL DEFAULT 0,
-    "totalTimeTaken" TEXT NOT NULL DEFAULT '',
+    "totalTimeTaken" INTEGER NOT NULL DEFAULT 0,
     "totalPointsScored" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

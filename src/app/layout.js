@@ -13,7 +13,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* FIXME Toaster style */}
         <Toaster
           position="top-center"
           reverseOrder={false}
