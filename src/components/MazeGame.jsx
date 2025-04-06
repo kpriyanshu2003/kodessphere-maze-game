@@ -172,7 +172,7 @@ export default function MazeGame({ user }) {
   const startGame = () => {
     setGameState('playing')
     setScore(0)
-    setCurrentLevel(1)
+    setCurrentLevel(isSelected)
     setTotalElapsedTime(0) // Reset total time when starting a new game
   }
 
