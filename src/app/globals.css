@@ -1,8 +1,8 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 .font-pacman {
-  src: url("/src/fonts/Pacmania.otf") format("opentype");
-  font-family: "Pacmania", "consolas";
+  src: url('/src/fonts/Pacmania/Pacmania.woff') format('opentype');
+  font-family: 'Pacmania', 'consolas';
 }
 
 /* Game specific animations */

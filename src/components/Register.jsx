@@ -70,7 +70,7 @@ function Page({ setUser }) {
     }
   }
   return (
-    <div className="bg-[#040404] h-screen w-screen grid place-items-center text-white">
+    <div className="bg-[#040404] h-screen w-screen grid place-items-center text-white px-4">
       {/* Botton PacMan */}
       {/* <svg
         xmlns="http://www.w3.org/2000/svg"
