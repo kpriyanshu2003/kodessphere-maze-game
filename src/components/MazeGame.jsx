@@ -30,10 +30,10 @@ export default function MazeGame({ user }) {
   const mazeRef = useRef(null);
 
   const levels = {
-    1: { size: 8, name: "Novice", time: 60 },
-    2: { size: 10, name: "Explorer", time: 90 },
-    3: { size: 15, name: "Master", time: 120 },
-    4: { size: 25, name: "Impossible", time: 180 },
+    1: { size: 8, name: "Novice", time: 20 },
+    2: { size: 10, name: "Explorer", time: 30 },
+    3: { size: 15, name: "Master", time: 60 },
+    4: { size: 25, name: "Impossible", time: 120 },
   };
 
   // Clear all timers when component unmounts or gameState changes
