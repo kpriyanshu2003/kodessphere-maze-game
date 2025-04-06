@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 .font-pacman {
-  src: url('/src/fonts/Pacmania/Pacmania.woff') format('opentype');
+  src: url('/src/fonts/Pacmania/Pacmania.woff2') format('woff2');
   font-family: 'Pacmania', 'consolas';
 }
 

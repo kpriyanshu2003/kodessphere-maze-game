@@ -103,7 +103,7 @@ function Page({ setUser }) {
         ))} */}
 
       {/* Form */}
-      <div className="border-2 rounded-lg px-16 py-10 border-[#2121DE] md:w-5/12 flex flex-col justify-between shadow-xl shadow-[#2121DE]">
+      <div className="border-2 rounded-lg px-16 py-10 border-[#2121DE] md:w-5/12 flex flex-col justify-between">
         <div className="text-center font-pacman text-5xl">Maze Adventure</div>
         <div className="md:px-6 py-4 md:mt-4 grid place-items-center">
           <form
