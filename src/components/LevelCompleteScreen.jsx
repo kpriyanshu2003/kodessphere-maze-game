@@ -154,7 +154,7 @@ export default function LevelCompleteScreen({
       <div className="flex items-center gap-8">
         <button
           onClick={nextLevel}
-          className="whitespace-nowrap w-full cursor-pointer px-10 py-4 rounded-xl border-[#FFFF00] text-xl transform transition-all duration-300 flex items-center mt-4 text-white border-2 font-mono"
+          className="whitespace-nowrap w-full cursor-pointer px-3 md:px-10 py-4 rounded-xl border-[#FFFF00] text-xl transform transition-all duration-300 flex items-center mt-4 text-white border-2 font-mono"
         >
           next level
         </button>
@@ -162,7 +162,7 @@ export default function LevelCompleteScreen({
           <button
             disabled={loading}
             onClick={updateLeaderboard}
-            className="w-full cursor-pointer px-10 py-4 rounded-xl border-[#FFFF00] text-xl transform transition-all duration-300 flex items-center mt-4 text-white border-2 font-mono"
+            className="w-full cursor-pointer px-3 md:px-10 py-4 rounded-xl border-[#FFFF00] text-xl transform transition-all duration-300 flex items-center mt-4 text-white border-2 font-mono"
           >
             <span>{loading ? 'submitting' : 'submit'}</span>{' '}
             <svg
