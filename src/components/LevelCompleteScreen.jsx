@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 
@@ -157,29 +158,31 @@ export default function LevelCompleteScreen({
         >
           next level
         </button>
-        <button
-          disabled={loading}
-          onClick={updateLeaderboard}
-          className="w-full cursor-pointer px-10 py-4 rounded-xl border-[#FFFF00] text-xl transform transition-all duration-300 flex items-center mt-4 text-white border-2 font-mono"
-        >
-          <span>{loading ? 'submitting' : 'submit'}</span>{' '}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="icon icon-tabler icon-tabler-pacman ml-2"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            strokeWidth="2"
-            stroke="#ff0"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        <Link href={'/leaderboard'}>
+          <button
+            disabled={loading}
+            onClick={updateLeaderboard}
+            className="w-full cursor-pointer px-10 py-4 rounded-xl border-[#FFFF00] text-xl transform transition-all duration-300 flex items-center mt-4 text-white border-2 font-mono"
           >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M5.636 5.636a9 9 0 0 1 13.397 .747l-5.619 5.617l5.619 5.617a9 9 0 1 1 -13.397 -11.981z" />
-            <circle cx="11.5" cy="7.5" r="1" fill="currentColor" />
-          </svg>
-        </button>
+            <span>{loading ? 'submitting' : 'submit'}</span>{' '}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="icon icon-tabler icon-tabler-pacman ml-2"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="#ff0"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M5.636 5.636a9 9 0 0 1 13.397 .747l-5.619 5.617l5.619 5.617a9 9 0 1 1 -13.397 -11.981z" />
+              <circle cx="11.5" cy="7.5" r="1" fill="currentColor" />
+            </svg>
+          </button>
+        </Link>
       </div>
     </div>
   )

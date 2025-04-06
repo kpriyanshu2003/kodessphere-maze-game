@@ -235,7 +235,7 @@ export default function MazeGame({ user }) {
           />
         )
       case 'completed':
-        return (
+        return isSelected < 3 ? (
           <LevelCompleteScreen
             user={user}
             currentLevel={currentLevel}
@@ -248,7 +248,21 @@ export default function MazeGame({ user }) {
             nextLevel={nextLevel}
             levelScore={levelScore}
           />
+        ) : (
+          <GameOverScreen
+            user={user}
+            moves={moves}
+            timer={timer}
+            score={score}
+            currentLevel={isSelected}
+            levels={levels}
+            elapsedTime={elapsedTime}
+            totalElapsedTime={totalElapsedTime}
+            formatTime={formatTime}
+            restartGame={restartGame}
+          />
         )
+
       case 'gameover':
         return (
           <GameOverScreen
