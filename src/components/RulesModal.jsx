@@ -6,7 +6,7 @@ const RulesModal = ({ showRules, setShowRules }) => {
   return (
     <div className="fixed inset-0 bg-opacity-70 flex items-center justify-center z-50 p-4 bg-black font-mono">
       <div
-        className="rounded-xl shadow-2xl w-4/6 p-6 max-h-[80vh] overflow-y-auto relative text-white border-2 border-[#2121DE]"
+        className="rounded-xl shadow-2xl md:w-4/6 p-6 max-h-[80vh] overflow-y-auto relative text-white border-2 border-[#2121DE]"
         style={
           {
             // background: "linear-gradient(180deg, #000033 0%, #000066 100%)",
@@ -97,25 +97,37 @@ const RulesModal = ({ showRules, setShowRules }) => {
 
           {/* FIXME Add Valid Levels */}
           <div className="border-b-2 border-blue-700 pb-3">
-            <h3 className="font-bold text-lg text-yellow-300 flex items-center">
+            <h3 className="font-bold text-lg text-yellow-300 flex items-center mb-2">
               <div className="w-4 h-4 bg-yellow-300 rounded-full mr-2"></div>
               Levels
             </h3>
             <ul className="ml-6 space-y-2 text-blue-100">
-              <li className="flex items-center">
-                <div className="w-3 h-3 bg-pink-400 rounded-t-full mr-2"></div>
-                <span className="font-bold text-yellow-200">Level 1:</span>
-                <span className="ml-2">10x10 maze, 1 minute</span>
+              <li className="flex items-start gap-2">
+                <div className="w-3 h-3 bg-pink-400 rounded-t-full mt-1"></div>
+                <div className="flex">
+                  <span className="font-bold text-yellow-200 w-[70px]">
+                    Level 1:
+                  </span>
+                  <span className="ml-2">10x10 maze, 1 minute</span>
+                </div>
               </li>
-              <li className="flex items-center">
-                <div className="w-3 h-3 bg-cyan-400 rounded-t-full mr-2"></div>
-                <span className="font-bold text-yellow-200">Level 2:</span>
-                <span className="ml-2">15x15 maze, 1:30 minutes</span>
+              <li className="flex items-start gap-2">
+                <div className="w-3 h-3 bg-cyan-400 rounded-t-full mt-1"></div>
+                <div className="flex">
+                  <span className="font-bold text-yellow-200 w-[70px]">
+                    Level 2:
+                  </span>
+                  <span className="ml-2">15x15 maze, 1:30 minutes</span>
+                </div>
               </li>
-              <li className="flex items-center">
-                <div className="w-3 h-3 bg-orange-400 rounded-t-full mr-2"></div>
-                <span className="font-bold text-yellow-200">Level 3:</span>
-                <span className="ml-2">20x20 maze, 2 minutes</span>
+              <li className="flex items-start gap-2">
+                <div className="w-3 h-3 bg-orange-400 rounded-t-full mt-1"></div>
+                <div className="flex">
+                  <span className="font-bold text-yellow-200 w-[70px]">
+                    Level 3:
+                  </span>
+                  <span className="ml-2">20x20 maze, 2 minutes</span>
+                </div>
               </li>
             </ul>
           </div>
