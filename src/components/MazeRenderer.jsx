@@ -1,4 +1,4 @@
-import { Home, Key, Flag } from "lucide-react";
+import { Home, Key, Flag } from 'lucide-react'
 
 export default function MazeRenderer({
   maze,
@@ -6,18 +6,18 @@ export default function MazeRenderer({
   hasKey,
   visibilityRange = 2,
 }) {
-  if (!maze) return null;
+  if (!maze) return null
 
-  const minRowVisible = Math.max(0, playerPosition.x - visibilityRange);
+  const minRowVisible = Math.max(0, playerPosition.x - visibilityRange)
   const maxRowVisible = Math.min(
     maze.length - 1,
-    playerPosition.x + visibilityRange
-  );
-  const minColVisible = Math.max(0, playerPosition.y - visibilityRange);
+    playerPosition.x + visibilityRange,
+  )
+  const minColVisible = Math.max(0, playerPosition.y - visibilityRange)
   const maxColVisible = Math.min(
     maze[0].length - 1,
-    playerPosition.y + visibilityRange
-  );
+    playerPosition.y + visibilityRange,
+  )
 
   return (
     <div
@@ -30,12 +30,12 @@ export default function MazeRenderer({
       {maze.map((row, rowIndex) =>
         row.map((cell, colIndex) => {
           const isPlayer =
-            playerPosition.x === rowIndex && playerPosition.y === colIndex;
+            playerPosition.x === rowIndex && playerPosition.y === colIndex
           const isVisible =
             rowIndex >= minRowVisible &&
             rowIndex <= maxRowVisible &&
             colIndex >= minColVisible &&
-            colIndex <= maxColVisible;
+            colIndex <= maxColVisible
 
           // Only show cells that are visible or are the player
           if (!isVisible && !isPlayer)
@@ -44,23 +44,23 @@ export default function MazeRenderer({
                 key={`${rowIndex}-${colIndex}`}
                 className="bg-black aspect-square"
               />
-            );
+            )
 
           return (
             <div
               key={`${rowIndex}-${colIndex}`}
               className={`
                 relative aspect-square transition-all duration-200
-                ${cell.isBlocked ? "bg-blue-700" : "bg-black"}
-                ${cell.isStart ? "bg-black" : ""}
-                ${cell.isKey ? "bg-black" : ""}
-                ${cell.isGoal ? "bg-black" : ""}
+                ${cell.isBlocked ? 'bg-blue-700' : 'bg-black'}
+                ${cell.isStart ? 'bg-black' : ''}
+                ${cell.isKey ? 'bg-black' : ''}
+                ${cell.isGoal ? 'bg-black' : ''}
               `}
               style={{
-                boxSizing: "border-box",
-                boxShadow: cell.isBlocked ? "inset 0 0 0 2px #0066cc" : "none",
-                outline: cell.isBlocked ? "1px solid #0088ff" : "none",
-                position: "relative",
+                boxSizing: 'border-box',
+                boxShadow: cell.isBlocked ? 'inset 0 0 0 2px #0066cc' : 'none',
+                outline: cell.isBlocked ? '1px solid #0088ff' : 'none',
+                position: 'relative',
                 zIndex: cell.isBlocked ? 1 : 0,
               }}
             >
@@ -97,7 +97,7 @@ export default function MazeRenderer({
               {isPlayer && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="icon icon-tabler icon-tabler-pacman translate-x-2 translate-y-2"
+                  className="icon icon-tabler icon-tabler-pacman "
                   width="24"
                   height="24"
                   viewBox="-5 0 24 24"
@@ -113,9 +113,9 @@ export default function MazeRenderer({
                 </svg>
               )}
             </div>
-          );
-        })
+          )
+        }),
       )}
     </div>
-  );
+  )
 }

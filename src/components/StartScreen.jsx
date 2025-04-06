@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { Info, Trophy } from "lucide-react";
+import Link from 'next/link'
+import { Info, Trophy } from 'lucide-react'
 
 export default function StartScreen({
   levels,
@@ -20,13 +20,13 @@ export default function StartScreen({
 
         {/* Level Selector */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-md mt-6">
-          {[1, 2, 3].map((level) => (
+          {[1, 2, 3, 4].map((level) => (
             <div
               key={level}
               onClick={() => setIsSelected(level)}
               className={`transition-all duration-300 flex items-center justify-between sm:justify-center gap-4 border-2 rounded-lg px-4 py-3 border-[#2121DE] text-[#FFFF00] font-mono font-bold cursor-pointer ${
                 isSelected === level &&
-                "outline-offset-4 outline outline-red-500 "
+                'outline-offset-4 outline outline-red-500 '
               }`}
             >
               <div className="text-2xl font-bold">{level}</div>
@@ -47,7 +47,7 @@ export default function StartScreen({
           onClick={startGame}
           className="mt-8 w-full max-w-sm border-2 border-yellow-400 rounded-lg font-mono px-6 py-4 flex justify-center items-center gap-2 text-[#FFFF00] shadow-lg hover:shadow-yellow-500 transition duration-300 cursor-pointer"
         >
-          Start Game{" "}
+          Start Game{' '}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="icon icon-tabler icon-tabler-pacman"
@@ -86,5 +86,5 @@ export default function StartScreen({
         </div>
       </div>
     </div>
-  );
+  )
 }
