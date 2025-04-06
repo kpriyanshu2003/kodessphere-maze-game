@@ -46,11 +46,11 @@ export default function Home() {
         />
       </div>
 
-      <h1 className="text-yellow-300 text-3xl sm:text-5xl font-bold mt-6 sm:mt-10 text-center tracking-wide font-pacman">
+      <h1 className="text-yellow-300 text-3xl sm:text-5xl font-bold mt-18 sm:mt-10 text-center tracking-wide font-pacman">
         Kodesphere 2.0
       </h1>
 
-      <div className="w-full max-w-5xl rounded-lg shadow-lg mt-20">
+      <div className="w-full max-w-5xl rounded-lg shadow-lg mt-3 md:mt-20 overflow-x-scroll">
         <table className="w-full min-w-[700px] border-collapse backdrop-blur-md">
           <thead>
             <tr className="text-white font-semibold text-lg border-b-2 border-[#2121DE]">
