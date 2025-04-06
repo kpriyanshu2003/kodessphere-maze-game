@@ -26,7 +26,7 @@ export default function StartScreen({
               onClick={() => setIsSelected(level)}
               className={`transition-all duration-300 flex items-center justify-between sm:justify-center gap-4 border-2 rounded-lg px-4 py-3 border-[#2121DE] text-[#FFFF00] font-mono font-bold cursor-pointer ${
                 isSelected === level &&
-                'outline-offset-4 outline outline-red-500 outline-2'
+                'outline-offset-4 outline outline-red-500 '
               }`}
             >
               <div className="text-2xl font-bold">{level}</div>
