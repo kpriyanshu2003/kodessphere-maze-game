@@ -1,7 +1,7 @@
-import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react'
 
 const RulesModal = ({ showRules, setShowRules }) => {
-  if (!showRules) return null;
+  if (!showRules) return null
 
   return (
     <div className="fixed inset-0 bg-opacity-70 flex items-center justify-center z-50 p-4 bg-black font-mono">
@@ -105,17 +105,17 @@ const RulesModal = ({ showRules, setShowRules }) => {
               <li className="flex items-center">
                 <div className="w-3 h-3 bg-pink-400 rounded-t-full mr-2"></div>
                 <span className="font-bold text-yellow-200">Level 1:</span>
-                <span className="ml-2">5×5 maze, 1 minute</span>
+                <span className="ml-2">10x10 maze, 1 minute</span>
               </li>
               <li className="flex items-center">
                 <div className="w-3 h-3 bg-cyan-400 rounded-t-full mr-2"></div>
                 <span className="font-bold text-yellow-200">Level 2:</span>
-                <span className="ml-2">8×8 maze, 1:30 minutes</span>
+                <span className="ml-2">15x15 maze, 1:30 minutes</span>
               </li>
               <li className="flex items-center">
                 <div className="w-3 h-3 bg-orange-400 rounded-t-full mr-2"></div>
                 <span className="font-bold text-yellow-200">Level 3:</span>
-                <span className="ml-2">12×12 maze, 2 minutes</span>
+                <span className="ml-2">20x20 maze, 2 minutes</span>
               </li>
             </ul>
           </div>
@@ -130,10 +130,7 @@ const RulesModal = ({ showRules, setShowRules }) => {
                 <div className="w-3 h-3 bg-yellow-300 rounded-full mr-2"></div>
                 <span>Base score: 500 points per level</span>
               </li>
-              <li className="flex items-center">
-                <div className="w-3 h-3 bg-yellow-300 rounded-full mr-2"></div>
-                <span>Time bonus: 5 points for each second left</span>
-              </li>
+
               <li className="flex items-center">
                 <div className="w-3 h-3 bg-red-400 rounded-full mr-2"></div>
                 <span>Move penalty: -10 points per extra move</span>
@@ -183,11 +180,11 @@ const RulesModal = ({ showRules, setShowRules }) => {
 
         <button
           onClick={() => setShowRules(false)}
-          className="mt-6 w-full py-3 rounded-full cursor-pointer font-bold text-lg transform transition-all duration-300  flex items-center justify-center border-2 border-yellow-300 text-yellow-300"
+          className="mt-6 w-full py-3 rounded-full cursor-pointer font-bold text-lg transform transition-all duration-300  flex items-center justify-center border-2 border-yellow-300 text-yellow-300 hover:bg-yellow-300 hover:text-black"
           style={{
             // background: "linear-gradient(to right, #FFFF00, #FFCC00)",
-            ":hover": {
-              boxShadow: "0 0 15px rgba(255, 255, 0, 0.7)",
+            ':hover': {
+              boxShadow: '0 0 15px rgba(255, 255, 0, 0.7)',
             },
 
             // border: "3px solid #FFAA00",
@@ -204,7 +201,7 @@ const RulesModal = ({ showRules, setShowRules }) => {
         </div> */}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RulesModal;
+export default RulesModal

@@ -43,7 +43,7 @@ export async function POST(req) {
     const { name, email, level, score, moves, totalTimeTaken } = body
 
     // Input validation
-    if (!name || !email) {
+    if (!name || !email || name.trim().length < 3) {
       return NextResponse.json(
         { success: false, message: 'Name and Email are required' },
         { status: 400 },
@@ -72,7 +72,7 @@ export async function POST(req) {
 
     if (!user) {
       user = await prisma.user.create({
-        data: { name, email },
+        data: { name: name.trim(), email: email.trim().toLowerCase() },
       })
     } else if (user.name !== name) {
       // Update name if it has changed

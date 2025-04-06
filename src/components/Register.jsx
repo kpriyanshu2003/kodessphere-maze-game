@@ -1,71 +1,74 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+'use client'
+import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 function Page({ setUser }) {
-  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [formData, setFormData] = useState({ name: '', email: '' })
   const [loading, setLoading] = useState({
     loading: false,
-    message: "register",
-  });
-  const [pacmanPosition, setPacmanPosition] = useState(0);
+    message: 'register',
+  })
+  const [pacmanPosition, setPacmanPosition] = useState(0)
 
   // Animate Pacman movement
   useEffect(() => {
     const interval = setInterval(
       () => setPacmanPosition((prev) => (prev + 1) % 100),
-      100
-    );
-    return () => clearInterval(interval);
-  }, []);
+      100,
+    )
+    return () => clearInterval(interval)
+  }, [])
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!formData.email || !formData.name) {
-      toast.error("Please fill all fields");
-      return;
+      toast.error('Please fill all fields')
+      return
     }
-    if (!formData.email.includes("@")) {
-      toast.error("Please enter a valid email");
-      return;
+    if (!formData.email.includes('@')) {
+      toast.error('Please enter a valid email')
+      return
     }
-    if (formData.name.length < 3) {
-      toast.error("Name should be at least 3 characters");
-      return;
+    if (formData.name.trim().length < 3) {
+      toast.error('Name should be at least 3 characters')
+      return
     }
-    if (!formData.email.endsWith("@kiit.ac.in")) {
-      toast.error("Please use your kiit email");
-      return;
+    if (!formData.email.endsWith('@kiit.ac.in')) {
+      toast.error('Please use your kiit email')
+      return
     }
     try {
-      setLoading({ loading: true, message: "registering..." });
-      const response = await fetch("/api/leaderboard", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: formData.name, email: formData.email }),
-      });
+      setLoading({ loading: true, message: 'registering...' })
+      const response = await fetch('/api/leaderboard', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim().toLowerCase(),
+        }),
+      })
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Something went wrong");
-      if (data && data.user) toast.success("Registered successfully");
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.message || 'Something went wrong')
+      if (data && data.user) toast.success('Registered successfully')
 
-      setFormData({ name: "", email: "" });
+      setFormData({ name: '', email: '' })
       setInterval(
         () => setUser({ name: formData.name, email: formData.email }),
-        1000
-      );
+        1000,
+      )
     } catch (error) {
-      console.log("error", error);
-      toast.error(error.message);
-      setLoading({ loading: false, message: "unknown error" });
+      console.log('error', error)
+      toast.error(error.message)
+      setLoading({ loading: false, message: 'unknown error' })
     } finally {
       setTimeout(
-        () => setLoading({ loading: false, message: "register" }),
-        2000
-      );
+        () => setLoading({ loading: false, message: 'register' }),
+        2000,
+      )
     }
-  };
+  }
   return (
     <div className="bg-[#040404] h-screen w-screen grid place-items-center text-white">
       {/* Botton PacMan */}
@@ -100,7 +103,7 @@ function Page({ setUser }) {
         ))} */}
 
       {/* Form */}
-      <div className="border-2 rounded-lg px-16 py-10 border-[#2121DE] h-6/12 md:w-5/12 flex flex-col justify-between">
+      <div className="border-2 rounded-lg px-16 py-10 border-[#2121DE] h-6/12 md:w-5/12 flex flex-col justify-between shadow-xl shadow-[#2121DE]">
         <div className="text-center font-pacman text-5xl">Maze Adventure</div>
         <div className="md:px-6 py-4 md:mt-4 grid place-items-center">
           <form
@@ -127,12 +130,12 @@ function Page({ setUser }) {
             />
             <button
               className={`font-mono flex items-center gap-2 border-2 border-[#FFFF00] rounded-md justify-center py-3 ${
-                loading.loading ? "cursor-not-allowed" : "cursor-pointer"
+                loading.loading ? 'cursor-not-allowed' : 'cursor-pointer'
               }`}
               type="submit"
               disabled={loading.loading}
             >
-              {loading.message}{" "}
+              {loading.message}{' '}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="icon icon-tabler icon-tabler-pacman"
@@ -154,7 +157,7 @@ function Page({ setUser }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Page;
+export default Page
