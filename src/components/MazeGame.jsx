@@ -284,7 +284,7 @@ export default function MazeGame({ user }) {
   }
 
   return (
-    <div className="min-h-screen min-w-screen grid place-items-center bg-[#040404] p-4">
+    <div className="min-h-screen min-w-screen grid place-items-center bg-[#040404]">
       {renderGameScreen()}
       <RulesModal showRules={showRules} setShowRules={setShowRules} />
     </div>
